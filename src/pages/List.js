@@ -69,7 +69,7 @@ export default function List(){
             <Container className="mt-5">
                 <Row>
                     <Col sm={8}>
-                        <h1>Crime List</h1>
+                        <h1>Crime <span className="letter">L</span>ist</h1>
                     </Col>
                     <Col sm={4} className="d-flex justify-content-end">
                         

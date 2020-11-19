@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Template/Header';
 import Footer from '../components/Template/Footer';
 import { Col, Row, Container, Form, Button } from 'react-bootstrap';
@@ -35,12 +36,12 @@ export default function Create() {
 
     return (
         <>
-           <Header />
+           <Header back />
 
             <Container className="mt-5">
                <Row>
                    <Col>
-                        <h1>New Crime</h1>
+                        <h1>New <span className="letter">C</span>rime</h1>
                    </Col>
                </Row>
 
@@ -121,12 +122,12 @@ export default function Create() {
                                 
                                 </Col>
                                 <Col sm={3}>
-                                    <Button
+                                    <Link to="/weapon"
                                         variant="link"
                                         className="btn btn-light"
                                         onClick={(e) => handleCreate(e)} >
                                         <i className="fa fa-plus-square-o"></i> Register new weapon
-                                    </Button>
+                                    </Link>
                                 
                                 </Col>
                             </Row>
