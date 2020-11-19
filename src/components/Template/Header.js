@@ -5,11 +5,9 @@ export default function Header() {
 
     return (
         <>
-
             <header>
                 <img src={logo} alt="Crime Manager"/>
             </header>
-
         </>
     )
 }

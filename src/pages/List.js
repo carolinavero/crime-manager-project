@@ -1,11 +1,11 @@
 import React from 'react';
 
-import Header from './Template/Header';
-import Footer from './Template/Footer';
+import Header from '../components/Template/Header';
+import Footer from '../components/Template/Footer';
 
 import { Container, Row, Col } from 'react-bootstrap';
-import Search from './Template/Search';
-import Card from './Template/Card';
+import Search from '../components/Template/Search';
+import Card from '../components/Template/Card';
 
 export default function List(){
 
@@ -19,33 +19,25 @@ export default function List(){
                     <Col sm={8}>
                         <h1>Crime List</h1>
                     </Col>
-                    <Col sm={4}>
+                    <Col sm={4} className="d-flex justify-content-end">
+                        
                         <a href="/" className="btn btn-primary">
-                            <i className="fa  fa-plus-square-o"></i> Add New Crime
+                            <i className="fa fa-plus-square-o"></i> Add New Crime
                         </a>
                     </Col>
                 </Row>
 
-                <Row>
+                <Row className="mb-5">
                     <Col>
-                    
                         <Search />
                     </Col>
                 </Row>
 
-                <Row>
+                <Row className="pr-0">
                     <Col sm={3}>
                         <Card />
                     </Col>
-                    <Col sm={3}>
-                        <Card />
-                    </Col>
-                    <Col sm={3}>
-                        <Card />
-                    </Col>
-                    <Col sm={3}>
-                        <Card />
-                    </Col>
+                
                 </Row>
 
             </Container>
