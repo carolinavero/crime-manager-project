@@ -16,24 +16,23 @@ export default function List(){
 
     // Filters
     const [textFilter, setTextFilter] = useState('');
-
     const [typeOfCrimes, setTypeOfCrimes] = useState([]);
-
-    const [fromDate, setFromDate] = useState();
-    const [toDate, setToDate] = useState();
-
+    
+    // Selected
     const [selectedDates, setSelectedDates] = useState();
     const [orderBy, setOrderBy] = useState('');
+    const [fromDate, setFromDate] = useState();
+    const [toDate, setToDate] = useState();
+    const [selectedType, setSelectedType] = useState('All crimes');
 
-    const [crimes, setCrimes] = useState({});
+    const [crimes, setCrimes] = useState([]);
 
     const [loaded, setLoaded] = useState(false);
+
+    const [searchFilters, setSearchFilters]  = useState('Brasil');
+    const [searchResults, setSearchResults]  = useState([]);
     
 
-    // Add new crime 
-    async function handleAddNewCrime() {
-
-    }
 
     // Search 
     async function handleSearch (e) {
@@ -42,9 +41,13 @@ export default function List(){
         console.log("buscando...");
 
         const info = await api.get(`/crimes`);
-        console.log("crimes: ", info.data.data.crimes);
-
         setCrimes(info.data.data.crimes);
+
+        console.log("crimes: ", crimes);
+        console.log('evento: ', e);
+
+        const results = crimes.filter(crime => crime.includes(searchFilters));
+        setSearchResults(results);
         
     }
     
@@ -56,9 +59,9 @@ export default function List(){
             setTypeOfCrimes(typesOfCrimes.data.data.crime_types);
         }
         getTypeOfCrimes();
-        //setLoaded(true);
+        setLoaded(true);
         
-    }, [loaded]);
+    }, []);
 
 
     return (
@@ -67,6 +70,7 @@ export default function List(){
             <Header />
 
             <Container className="mt-5">
+
                 <Row>
                     <Col sm={8}>
                         <h1>Crime <span className="letter">L</span>ist</h1>
@@ -75,7 +79,6 @@ export default function List(){
                         
                         <Link to="/add" 
                             className="btn btn-primary"
-                            onClick={handleAddNewCrime}
                         >
                             <i className="fa fa-plus-square-o"></i> Add New Crime
                         </Link>
@@ -102,18 +105,23 @@ export default function List(){
 
                                 <Form.Group as={Col} sm={6} controlId="formTypeOfCrimes">
                                     <Form.Label><i className="fa fa-folder-open"></i> Type of crime</Form.Label>
-                                    <Form.Control as="select" defaultValue="All crimes">
+                                    <Form.Control 
+                                        as="select" 
+                                        
+                                        value={selectedType}
+                                        onChange={value => setSelectedType(value)}
+                                    >
 
-                                        <option
+                                      {/*   <option
                                             value="All crimes">
                                             All crimes
-                                        </option>
+                                        </option> */}
 
-                                        {typeOfCrimes.map((option) => (
+                                        {typeOfCrimes.map((option, i) => (
                                             
                                             <option 
-                                                key={option.value} 
-                                                value={option.value}> 
+                                                key={option.id_crime_type} 
+                                                value={option.id_crime_type}> 
                                                     {option.tx_type} 
                                             </option>
                                         ))}                    
@@ -188,39 +196,43 @@ export default function List(){
                     </Col>
                 </Row>
 
+                
                 <Row>
 
-                    <Col>
-                    
-                        {
-                            loaded ?
 
-                                crimes.map((crime, index) =>
-                                    <div key={index}>
-                                        <div className="card crime">
-                                            <div className="crime__title">
-                                                {crime.criminal_crime_types.map((types, index) => types.crime_type)}
-                                            </div>
-                                            <div className="crime__type mb-3">Crime type</div>
-                                            <div className="crime__date"> {crime.crime_date}</div>
-                                            <div className="crime__country">{crime.country}</div>
+                {
+                    searchResults ?
 
-                                            <div className="crime__zoom-button">
-                                                <a href="/" className="zoom-button">
-                                                    <i className="fa fa-search-plus"></i>
-                                                </a>
-                                            </div>
+                        crimes.map((crime, index) =>
+                        
+                            
+                        <Col className="d-flex mb-3" sm={3} key={index}>
+                            <div className="card crime">
+                                <div className="crime__title">
+                                    {crime.criminal_crime_types.map((types, index) => types.crime_type)}
+                                </div>
+                                <div className="crime__type mb-3">Crime type</div>
+                                <div className="crime__date"> {crime.crime_date}</div>
+                                <div className="crime__country">{crime.country}</div>
 
-                                        </div>
-                                    </div>
-                                )
+                                <div className="crime__zoom-button">
+                                    <a href="/" className="zoom-button">
+                                        <i className="fa fa-search-plus"></i>
+                                    </a>
+                                </div>
 
-                                : ''
-                        }
+                            </div>
+                        </Col>
+                            
+                        ) 
+                        
 
-                    </Col>
+                        : 'Nenhum item encontrado!'
+                }
                 </Row>
+                    
 
+                  
                                  
 
             </Container>

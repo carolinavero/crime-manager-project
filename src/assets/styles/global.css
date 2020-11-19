@@ -53,10 +53,10 @@ header {
     height: 67px;
     background-color: var(--primary-color);
     box-shadow: var(--box-shadow);
-}
 
-header img {
-    margin: 8px 20px;
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
 }
 
 footer {
@@ -150,6 +150,7 @@ i {
     color: var(--text-color);
     padding: 20px;
     border: none;
+    width: 100%;
 }
 
 .crime .crime__title {
