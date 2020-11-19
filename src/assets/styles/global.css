@@ -42,6 +42,7 @@ h2 {
 
 .container {
     max-width: var(--max-width);
+    margin-bottom: 7rem;
 }
 
 header {
@@ -58,9 +59,9 @@ footer {
     width: 100vw;
     height: 60px;
     background-color: var(--primary-color);
-    position: absolute;
     bottom: 0;
     box-shadow: var(--box-shadow-footer);
+    position: fixed;
 }
 
 
@@ -75,7 +76,10 @@ input,
     border-radius: 0;
 }
 
-
+/* Datepicker */
+.react-datepicker-wrapper {
+    display: block;
+}
 
 /* Button */ 
 .btn {
@@ -86,6 +90,7 @@ input,
     color: var(--dark-color);
     text-transform: uppercase;
     font-weight: bold;
+    font-family: 'Cinzel', cursive;
 
     width: 349px;
     height: 50px;
