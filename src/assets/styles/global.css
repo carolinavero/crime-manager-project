@@ -1,0 +1,119 @@
+:root {
+    --primary-color: #FCFC99;
+    --bg-color: #F1F9FF;
+    --text-color: #3C5C77;
+    
+    --dark-color: #313131;
+    --white-color: #FFFFFF;
+    --input-border-color: #BCE0FD;
+    --arrow-color: #2699FB;
+    --placeholder-color: #95A0A6;
+    
+    --box-shadow-color: #00000029;
+    --box-shadow: 0px 3px 3px var(--box-shadow-color);
+    --box-shadow-footer: 0px -3px 3px var(--box-shadow-color);
+    --box-shadow-button: -3px -3px 5px #FFFFFF4A; /* Button */
+    --box-shadow-card: -3px -3px 5px #FFFFFFC9; /* Card */
+
+    --max-width: 1456px;
+
+}
+
+body {
+    margin: 0;
+    background-color: var(--bg-color);
+
+    font-family: 'Montserrat', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    font-size: 18px;
+    color: var(--dark-color);
+}
+
+h1 {
+    font-size: 48px;
+    font-family: 'Cinzel', cursive;
+}
+
+h2 {
+    font-family: 'Cinzel', cursive;
+}
+/*
+.container {
+    max-width: var(--max-width);
+}
+*/
+
+header {
+    width: 100vw;
+    background-color: var(--primary-color);
+    box-shadow: var(--box-shadow);
+}
+
+header img {
+    margin: 8px 20px;
+}
+
+footer {
+    width: 100vw;
+    height: 60px;
+    background-color: var(--primary-color);
+    position: absolute;
+    bottom: 0;
+    box-shadow: var(--box-shadow-footer);
+}
+
+
+/* Form */ 
+
+form {
+    color: var(--text-color);
+}
+input,
+.form-control {
+    border-color: var(--input-border-color);
+    border-radius: 0;
+}
+
+/* Card */
+
+.crime {
+    background-color: var(--bg-color);
+    box-shadow: var(--box-shadow-card);
+    color: var(--text-color);
+    padding: 20px;
+}
+
+.crime .crime__title {
+    font-weight: 800;
+}
+
+.card-zoom-button {
+    color: var(--arrow-color);
+    float: right;
+}
+
+/* Button */ 
+.btn {
+    border-radius: 0;
+    border: none;
+    box-shadow: var(--box-shadow-button);
+
+    color: var(--dark-color);
+    text-transform: uppercase;
+
+    width: 349px;
+    height: 50px;
+    line-height: 40px;
+
+    opacity: 1;
+    
+}
+.btn-primary {
+    background-color: var(--primary-color);
+}
+
+.btn-secondary {
+    background-color: var(--bg-color);
+}

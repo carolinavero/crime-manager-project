@@ -1,8 +1,17 @@
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+
+import List from './components/List';
+
+import 'bootstrap/dist/css/bootstrap.css';
+import './assets/styles/global.css';
 
 function App() {
+
   return (
-    <h1>Hello World</h1>
+    <Router>
+      <Route exact path="/" component={List} />
+    </Router>
   );
 }
 
