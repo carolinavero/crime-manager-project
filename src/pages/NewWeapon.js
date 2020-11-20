@@ -3,33 +3,51 @@ import Header from '../components/Template/Header';
 import Footer from '../components/Template/Footer';
 import { Col, Row, Container, Form, Button } from 'react-bootstrap';
 
+import { useHistory } from 'react-router-dom';
 import api from '../services/api';
 
 export default function NewWeapon() {
 
-    const [typeOfWeapons, setTypeOfWeapons] = useState();    
+    const [typeOfWeapons, setTypeOfWeapons] = useState([]);  
+    
+    const [selectedWeapon, setSelectedWeapon] = useState();
     const [weapon, setWeapon] = useState();
 
-    function handleCreate(e) {
+    const history = useHistory();
+
+    async function handleCreate(e) {
         e.preventDefault();
-        console.log("creating...");
+        console.log("create new weapon;...");
+        
+        try {
+
+            const response = await api.post('weapons', { weapon })
+            localStorage.setItem('@crime-manager/new', response.data);
+            history.push('/');
+
+        } catch (error) {
+            alert('Falha ao salvar nova arma')
+
+        }
+
+
     }
 
     // On loading, get weapon types
-   /*  useEffect(() => {
+    useEffect(() => {
 
         async function getTypeOfWeapons() {
             const typesOfWeapons = await api.get(`/weapon_types`);
-            setTypeOfWeapons(typesOfWeapons.data.data.weapon_types);
+            setTypeOfWeapons(typesOfWeapons.data.data.weapon_type);
         }
         getTypeOfWeapons();
 
-    }, [weapon]); */
+    }, []);
 
 
     return (
         <>
-            <Header back />
+            <Header back title="New weapon" />
 
             <Container className="mt-5">
                 <Row>
@@ -42,20 +60,24 @@ export default function NewWeapon() {
                     <Col>
 
                         <Form>
-                            <Form.Group as={Col} sm={6} controlId="formTypeOfCrimes">
-                                <Form.Label>Type of weapon</Form.Label>
-                                <Form.Control as="select">
+                            <Form.Group as={Col} sm={6} controlId="formTypeOfWeapon">
+                                <Form.Label>Weapon type</Form.Label>
+                                <Form.Control as="select" 
+                                    onChange={e => setSelectedWeapon(e.target.value)} >
 
                                     <option> Select an option... </option>
-                                    {/* 
-                                    {typeOfWeapons.map((option) => (
+                                    
+                                    {
+                                    typeOfWeapons && 
+                                    
+                                    typeOfWeapons.map((option) => (
 
                                         <option
-                                            key={option.value}
-                                            value={option.value}>
-                                            {option.tx_type}
+                                            key={option.id_weapon_type}
+                                            value={option.id_weapon_type}>
+                                            {option.tx_weapon_type}
                                         </option>
-                                    ))} */}
+                                    ))} 
 
                                 </Form.Control>
                             </Form.Group>
@@ -65,13 +87,12 @@ export default function NewWeapon() {
                                 <Form.Control
                                     type="text"
                                     placeholder="Type the name of the weapon..."
-                                    onChange={text => setWeapon(text)}
+                                    onChange={e => setWeapon(e.target.value)}
                                 />
                             </Form.Group>
                            
                             <Row className="mt-5">
                                 <Col sm={6}>
-
                                     <Button
                                         variant="primary"
                                         onClick={(e) => handleCreate(e)} >

@@ -10,15 +10,20 @@ import api from '../services/api';
 
 export default function Create() {
 
+
+    //Select field
     const [typeOfCrimes, setTypeOfCrimes] = useState();
+    const [typeOfWeapons, setTypeOfWeapons] = useState();
+
     const [date, setDate] = useState();
     const [criminal, setCriminal] = useState();
     const [weapon, setWeapon] = useState();
     const [victim, setVictim] = useState();
 
-    function handleCreate(e) {
+    async function handleCreate(e) {
         e.preventDefault();
         console.log("creating...");
+        
     }
 
     // On loading, get crime types
@@ -27,16 +32,27 @@ export default function Create() {
 
         async function getTypeOfCrimes() {
             const typesOfCrimes = await api.get(`/crime_types`);
+            console.log("tipos de crimes", typesOfCrimes)
             setTypeOfCrimes(typesOfCrimes.data.data.crime_types);
         }
+        
+        
+        async function getTypeOfWeapons() {
+            const typesOfWeapons = await api.get(`/weapon_types`);
+            setTypeOfWeapons(typesOfWeapons.data.data.weapon_type);
+        }
+
         getTypeOfCrimes();
+        getTypeOfWeapons();
+
 
     }, []);
 
 
     return (
+
         <>
-           <Header back />
+           <Header back title="New crime" />
 
             <Container className="mt-5">
                <Row>
@@ -49,68 +65,92 @@ export default function Create() {
                     <Col>
 
                         <Form>
-                            <Form.Group as={Col} sm={6} controlId="formTypeOfCrimes">
-                                <Form.Label>Type of crime</Form.Label>
-                                <Form.Control as="select">
 
-                                    <option> Select an option... </option>
-                                    {/* 
-                                    {typeOfCrimes.map((option) => (
+                            <Row>
+                                <Col sm={6}>
+                                    <Form.Group controlId="formTypeOfCrimes">
+                                        <Form.Label>Type of crime</Form.Label>
+                                        <Form.Control as="select">
 
-                                        <option
-                                            key={option.value}
-                                            value={option.value}>
-                                            {option.tx_type}
-                                        </option>
-                                    ))} */}
-
-                                </Form.Control>
-                            </Form.Group>
-
-                            <Form.Group as={Col} sm={3} controlId="formDate" className="mb-5">
-                                <Form.Label> Date</Form.Label>
-                                <div>
-
-                                    <DatePicker
-                                        placeholderText="YYYY/MM/DD - HH:MM:SS"
-                                        className="form-control"
-                                        dateFormat="yyyy/MM/dd"
-                                        onChange={date => setDate(date)}
+                                            <option> Select an option... </option>
+                                        
+                                    {
+                                    typeOfCrimes &&
                                     
-                                    />
-                                    <i className="fa fa-calendar"></i>
-                                </div>
-                            </Form.Group>
-
-                            <Form.Group as={Col} sm={6} controlId="formCriminal">
-                                <Form.Label> Criminal</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Type the name of the criminal..."
-                                    onChange={text => setCriminal(text)}
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col} sm={6} controlId="formWeapon">
-                                <Form.Label> Weapon (optional)</Form.Label>
-
-                                <Form.Control as="select">
-
-                                    <option> Select an option... </option>
-                                    {/* 
-                                    {weapon.map((option) => (
+                                    typeOfCrimes.map((option) => (
 
                                         <option
-                                            key={option.value}
-                                            value={option.value}>
+                                            key={option.id_crime_type}
+                                            value={option.id_crime_type}>
                                             {option.tx_type}
                                         </option>
-                                    ))} */}
-                                    </Form.Control>
+                                    ))} 
 
-                               
-                            </Form.Group>
+                                        </Form.Control>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
 
+                            <Row>
+                                <Col sm={3}>
+                                    <Form.Group controlId="formDate" className="mb-5 input-date">
+                                        <Form.Label> Date</Form.Label>
+                                        <div className="d-flex align-items-center justify-content-between">
+
+                                            <DatePicker
+                                                placeholderText="YYYY/MM/DD - HH:MM:SS"
+                                                className="form-control"
+                                                dateFormat="yyyy/MM/dd"
+                                                onChange={date => setDate(date)}
+
+                                            />
+                                            <i className="fa fa-calendar"></i>
+                                        </div>
+                                    </Form.Group>
+
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col sm={6}>
+
+                                    <Form.Group controlId="formCriminal">
+                                        <Form.Label> Criminal</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Type the name of the criminal..."
+                                            onChange={text => setCriminal(text)}
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group controlId="formWeapon">
+                                        <Form.Label> Weapon (optional)</Form.Label>
+
+                                        <Form.Control as="select">
+
+                                            <option> Select an option... </option>
+                                            
+                                            {typeOfWeapons && 
+                                                
+                                                typeOfWeapons.map((option) => (
+
+                                                <option
+                                                    key={option.id_weapon_type}
+                                                    value={option.id_weapon_type}>
+                                                    {option.tx_weapon_type}
+                                                    
+                                                </option>
+                                            ))}
+
+                                        </Form.Control>
+
+
+                                    </Form.Group>
+                                </Col>
+
+                                </Row>
+                            
+                            
                             <Row className="mb-5">
                                 <Col sm={3}>
                                     <Button
@@ -162,7 +202,7 @@ export default function Create() {
                             </Row>
 
                             <Row className="mt-5">
-                                <Col sm={6}>
+                                <Col sm={6} className="d-none d-sm-block">
 
                                     <Button
                                         variant="primary"
@@ -178,7 +218,9 @@ export default function Create() {
                 </Row>
            </Container>
 
-           <Footer />
+           <Footer 
+                footerButton="Save new crime" 
+                handleFooterButton={handleCreate} />
         </>
     )
 }

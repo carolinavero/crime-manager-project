@@ -43,7 +43,6 @@ export default function List(){
         setShow(true);
     }
 
- 
 
     // Search 
     async function handleSearch (e) {
@@ -89,13 +88,14 @@ export default function List(){
             <Container className="mt-5">
 
                 <Row>
-                    <Col sm={8}>
+                    <Col xs={12} sm={8}>
                         <h1>Crime <span className="letter">L</span>ist</h1>
                     </Col>
+
                     <Col sm={4} className="d-flex justify-content-end">
                         
                         <Link to="/add" 
-                            className="btn btn-primary"
+                            className="btn btn-primary d-none d-sm-inline-block"
                         >
                             <i className="fa fa-plus-square-o"></i> Add New Crime
                         </Link>
@@ -108,7 +108,7 @@ export default function List(){
                         <Form>
 
                             <Form.Row>
-                                <Form.Group as={Col} sm={6} controlId="formTextFilter">
+                                <Form.Group as={Col} xs={12} sm={12} md={12} lg={6}  controlId="formTextFilter">
                                     <Form.Label>Text filter</Form.Label>
                                     <Form.Control  
                                         type="text" 
@@ -120,7 +120,7 @@ export default function List(){
 
                             <Form.Row>
 
-                                <Form.Group as={Col} sm={6} controlId="formTypeOfCrimes">
+                                <Form.Group as={Col} xs={6} sm={6} controlId="formTypeOfCrimes">
                                     <Form.Label><i className="fa fa-folder-open"></i> Type of crime</Form.Label>
                                     <Form.Control 
                                         as="select" 
@@ -148,7 +148,7 @@ export default function List(){
 
 
                                 {/* Opcionais:  */}
-                                <Form.Group as={Col} sm={3} controlId="formDateFrom">
+                                <Form.Group as={Col} xs={6} sm={3} controlId="formDateFrom" className="d-none d-lg-inline-block">
                                     <Form.Label><i className="fa fa-calendar"></i> Date - From</Form.Label>
                                     <div>
 
@@ -165,7 +165,7 @@ export default function List(){
                                     </div>
                                 </Form.Group>
 
-                                <Form.Group as={Col} sm={3} controlId="formDateTo">
+                                <Form.Group as={Col} sm={3} controlId="formDateTo" className="d-none d-sm-none d-lg-inline-block">
                                     <Form.Label><i className="fa fa-calendar"></i> Date - To</Form.Label>
                                     <div>
                                         <DatePicker
@@ -182,6 +182,22 @@ export default function List(){
                                     </div>
                                 </Form.Group>
 
+                                {/* Mobile */}
+                                <Form.Group as={Col} xs={6} controlId="formDateFrom" className="d-lg-none">
+                                    <Form.Label><i className="fa fa-calendar"></i> Date</Form.Label>
+                                    <Form.Control
+                                        as="select"
+                                        onChange={() => {}}
+                                    >
+
+                                        <option
+                                            value="All dates">
+                                            All dates
+                                        </option>
+
+
+                                    </Form.Control>
+                                </Form.Group>
 
                             </Form.Row>
 
@@ -204,11 +220,16 @@ export default function List(){
                                 </Form.Group>
                             </Form.Row>
 
-                            <Button 
-                                variant="secondary"
-                                onClick={handleSearch} >
-                                <i className="fa fa-search"></i> Buscar
-                            </Button>
+                            <Row>
+                                <Col sm={3}>
+                                    <Button 
+                                        variant="secondary"
+                                        onClick={handleSearch} >
+                                        <i className="fa fa-search"></i> <span className="d-none d-sm-inline">Buscar</span>
+                                    </Button>
+                                </Col>
+                            </Row>
+
                         </Form>
                     </Col>
                 </Row>
@@ -245,10 +266,9 @@ export default function List(){
                 }
                 </Row>
                                  
-
             </Container>
 
-            <Footer />
+            <Footer footerLink="Add new crime" footerLinkTo="/add" />
 
 
             {
@@ -321,6 +341,8 @@ export default function List(){
                            
 
                                { 
+
+                                    modalCrime.victims_crime &&
                                     
                                     modalCrime.victims_crime.length > 0 ?
                                     
@@ -342,8 +364,17 @@ export default function List(){
 
                                     :  
 
-                                    <div>
-                                        <p>No victims.</p>
+                                    <div className="d-flex mb-4 align-items-center">
+                                        <div className="crime__title">
+                                            <div className="img-rounded">
+                                                <div className="img-no-victim">No Victim</div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            Sem vítimas
+                                            <div className="crime__small">Victim</div>
+                                        </div>
+
                                     </div>
 
                                 }  
