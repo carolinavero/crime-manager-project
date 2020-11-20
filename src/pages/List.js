@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
+
+import Image from 'react-random-image';
+import moment from 'moment';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
 import Header from '../components/Template/Header';
 import Footer from '../components/Template/Footer';
-
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-
-import DatePicker from 'react-datepicker';
-
-import "react-datepicker/dist/react-datepicker.css";
-
 import api from '../services/api';
 
 export default function List(){
@@ -31,8 +30,20 @@ export default function List(){
 
     const [searchFilters, setSearchFilters]  = useState('Brasil');
     const [searchResults, setSearchResults]  = useState([]);
-    
 
+    const [modalCrime, setModalCrime] = useState({});
+    
+    // Modal
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = (e, crime) => {
+        e.preventDefault();
+        console.log(crime)
+        setModalCrime(crime);
+        setShow(true);
+    }
+
+ 
 
     // Search 
     async function handleSearch (e) {
@@ -50,10 +61,16 @@ export default function List(){
         setSearchResults(results);
         
     }
+
+    // Delete Crime
+    function handleDelete(e) {
+        e.preventDefault();
+        console.log('delete..')
+    }
     
     // On loading, get all values
     useEffect(() => {
-        
+
         async function getTypeOfCrimes() {
             const typesOfCrimes = await api.get(`/crime_types`);
             setTypeOfCrimes(typesOfCrimes.data.data.crime_types);
@@ -199,24 +216,22 @@ export default function List(){
                 
                 <Row>
 
-
                 {
                     searchResults ?
 
                         crimes.map((crime, index) =>
-                        
                             
                         <Col className="d-flex mb-3" sm={3} key={index}>
                             <div className="card crime">
                                 <div className="crime__title">
-                                    {crime.criminal_crime_types.map((types, index) => types.crime_type)}
+                                    {crime.criminal_crime_types.map((types) => types.crime_type)}
                                 </div>
-                                <div className="crime__type mb-3">Crime type</div>
-                                <div className="crime__date"> {crime.crime_date}</div>
-                                <div className="crime__country">{crime.country}</div>
+                                <div className="crime__small mb-3">Crime type</div>
+                                    <div className="crime__date"> {moment(crime.crime_date).format('YYYY/MM/DD - HH:mm:ss')}</div>
+                                <div className="crime__small">{crime.country}</div>
 
                                 <div className="crime__zoom-button">
-                                    <a href="/" className="zoom-button">
+                                    <a href="/" className="zoom-button" onClick={(e) => handleShow(e, crime)}>
                                         <i className="fa fa-search-plus"></i>
                                     </a>
                                 </div>
@@ -226,18 +241,121 @@ export default function List(){
                             
                         ) 
                         
-
                         : 'Nenhum item encontrado!'
                 }
                 </Row>
-                    
-
-                  
                                  
 
             </Container>
 
             <Footer />
+
+
+            {
+                modalCrime && 
+
+                <Modal
+
+                    show={show}
+                    className="crime__modal"
+                    onHide={handleClose}
+                >
+
+                    <Modal.Body>
+                        <div className="d-flex justify-content-between">
+                            <h4>Crime</h4>
+                            <a href="/" onClick={(e) => handleDelete(e)}>
+                                <i className="fa fa-trash"></i>
+                            </a>
+                        </div>
+
+                        <div className="mb-3">
+
+                               { modalCrime.criminal_crime_types &&
+                               
+                                    modalCrime.criminal_crime_types.map((types) => (
+                                        
+                                        <>
+                                            <div className="crime__title">
+                                                {types.crime_type} 
+                                            </div>
+
+                                            <div className="crime__small mb-3">Crime type</div>
+                                            <div className="crime__date"> {moment(modalCrime.crime_date).format('YYYY/MM/DD - HH:mm:ss')}</div>
+                                            <div className="crime__small">{modalCrime.country}</div>
+
+                                            <h4 className="mt-3">Criminal</h4>
+                                            <div className="d-flex">
+                                                <div className="img-rounded">
+                                                    <Image alt={types.criminal} width={100} height={100} />
+                                                </div>
+                                                <div>
+                                                    {types.criminal}
+                                                    <p className="crime__small">Criminal</p>
+
+                                                    
+                                                    {       
+                                                        modalCrime.weapons_crime.map((weapon, index) => (
+                                                            <div key={index}>
+                                                                {weapon.weapon}
+                                                                <p className="crime__small">{weapon.weapon_type}</p>
+                                                            </div>
+                                                        ))                                                        
+                                                    }
+                                                    
+                                                </div>
+
+                                            </div>
+
+                                        </>                           
+                                    ))
+                                } 
+                                    
+
+                        </div>
+
+                        <div>
+                            
+
+                            <h4>Victim</h4>
+                           
+
+                               { 
+                                    
+                                    modalCrime.victims_crime.length > 0 ?
+                                    
+                                    modalCrime.victims_crime.map((victim, index) => (
+
+                                        <div key={index} className="d-flex mb-4 align-items-center">
+                                            <div className="crime__title">
+                                                <div className="img-rounded">
+                                                    <Image alt={victim.victim} width={100} height={100} />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                {victim.victim}
+                                                <div className="crime__small">Victim</div>
+                                            </div>
+
+                                        </div>
+                                    ))
+
+                                    :  
+
+                                    <div>
+                                        <p>No victims.</p>
+                                    </div>
+
+                                }  
+
+                        </div>
+
+                    </Modal.Body>
+
+                </Modal>
+
+    
+            }
 
         </>
     )

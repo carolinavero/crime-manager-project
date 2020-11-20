@@ -108,6 +108,14 @@ i {
     margin-right: .5rem;
 }
 
+.img-rounded {
+    border-radius: 50px;
+    overflow: hidden;
+    width: 100px;
+    height: 100px;
+    margin-right: 1rem;
+}
+
 .btn-primary,
 .btn-primary:hover, 
 .btn-primary:active, 
@@ -153,12 +161,13 @@ i {
     width: 100%;
 }
 
-.crime .crime__title {
+.crime .crime__title,
+.crime__modal .crime__title {
     font-weight: 800;
 }
 
-.crime .crime__type, 
-.crime .crime__country {
+.crime .crime__small, 
+.crime__modal .crime__small{
     font-size: 14px;
 }
 
@@ -166,4 +175,20 @@ i {
     color: var(--arrow-color);
     display: flex;
     align-self: flex-end;
+    width: 20px;
+    height: 20px;
+}
+
+/* Modal Crime */ 
+.crime__modal {
+    color: var(--font-color);
+}
+.crime__modal .modal-content {
+    background-color: var(--bg-color);
+color: var(--text-color);
+}
+
+.crime__modal h4 {
+    font-family: 'Cinzel', cursive;
+    color: var(--dark-color);
 }
