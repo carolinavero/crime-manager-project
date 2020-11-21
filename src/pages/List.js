@@ -14,22 +14,22 @@ import api from '../services/api';
 export default function List(){
 
     // Filters
-    const [textFilter, setTextFilter] = useState('');
+    const [textFilter, setTextFilter] = useState();
     const [typeOfCrimes, setTypeOfCrimes] = useState([]);
     
     // Selected
-    const [selectedDates, setSelectedDates] = useState();
-    const [orderBy, setOrderBy] = useState('');
-    const [fromDate, setFromDate] = useState();
-    const [toDate, setToDate] = useState();
+    const [orderBy, setOrderBy] = useState('Date');
+
+    const [fromDate, setFromDate] = useState(null);
+    const [toDate, setToDate] = useState(null);
+
+    /* const [allDates, setAllDates] = useState();
+    const [allTypeOfCrime, setAllTypeOfCrime] = useState(); */
+
+    const [selectedDates, setSelectedDates] = useState('All dates');
     const [selectedType, setSelectedType] = useState('All crimes');
 
-    const [crimes, setCrimes] = useState([]);
-
-    const [loaded, setLoaded] = useState(false);
-
-    const [searchFilters, setSearchFilters]  = useState('Brasil');
-    const [searchResults, setSearchResults]  = useState([]);
+    const [searchResults, setSearchResults]  = useState();
 
     const [modalCrime, setModalCrime] = useState({});
     
@@ -38,28 +38,28 @@ export default function List(){
     const handleClose = () => setShow(false);
     const handleShow = (e, crime) => {
         e.preventDefault();
-        console.log(crime)
+        console.log('crime: ', crime);
         setModalCrime(crime);
         setShow(true);
     }
 
-
-    // Search 
-    async function handleSearch (e) {
+    // Search
+    async function handleSearch(e) {
 
         e.preventDefault();
-        console.log("buscando...");
 
-        const info = await api.get(`/crimes`);
-        setCrimes(info.data.data.crimes);
+        const newFromDate = moment(fromDate).format('YYYY/MM/DD - HH:mm:ss')
+        const newToDate = moment(toDate).format('YYYY/MM/DD - HH:mm:ss')
+    
+        const results = await api.get(
+            `/crimes?crime_type=${selectedType}&order_by=${orderBy}&initial_datetime=${newFromDate}&final_datetime=${newToDate}`
+        );
 
-        console.log("crimes: ", crimes);
-        console.log('evento: ', e);
+        setSearchResults(results.data.data.crimes);
 
-        const results = crimes.filter(crime => crime.includes(searchFilters));
-        setSearchResults(results);
-        
     }
+    
+    console.log("search results : ", searchResults);
 
     // Delete Crime
     function handleDelete(e) {
@@ -69,17 +69,15 @@ export default function List(){
     
     // On loading, get all values
     useEffect(() => {
-
+        
         async function getTypeOfCrimes() {
             const typesOfCrimes = await api.get(`/crime_types`);
             setTypeOfCrimes(typesOfCrimes.data.data.crime_types);
         }
         getTypeOfCrimes();
-        setLoaded(true);
         
     }, []);
-
-
+    
     return (
 
         <>
@@ -112,8 +110,9 @@ export default function List(){
                                     <Form.Label>Text filter</Form.Label>
                                     <Form.Control  
                                         type="text" 
+                                        value={textFilter}
                                         placeholder="Search for..."
-                                        onChange={text => setTextFilter(text)} 
+                                        onChange={e => setTextFilter(e.target.value)} 
                                     />
                                 </Form.Group>
                             </Form.Row>
@@ -124,15 +123,14 @@ export default function List(){
                                     <Form.Label><i className="fa fa-folder-open"></i> Type of crime</Form.Label>
                                     <Form.Control 
                                         as="select" 
-                                        
                                         value={selectedType}
-                                        onChange={value => setSelectedType(value)}
+                                        onChange={e => setSelectedType(e.target.value)}
                                     >
 
-                                      {/*   <option
-                                            value="All crimes">
+                                        <option
+                                            value="0">
                                             All crimes
-                                        </option> */}
+                                        </option>
 
                                         {typeOfCrimes.map((option, i) => (
                                             
@@ -147,7 +145,6 @@ export default function List(){
                                 </Form.Group>
 
 
-                                {/* Opcionais:  */}
                                 <Form.Group as={Col} xs={6} sm={3} controlId="formDateFrom" className="d-none d-lg-inline-block">
                                     <Form.Label><i className="fa fa-calendar"></i> Date - From</Form.Label>
                                     <div>
@@ -155,7 +152,7 @@ export default function List(){
                                         <DatePicker
                                             placeholderText="YYYY/MM/DD - HH:MM:SS"
                                             className="form-control"
-                                            dateFormat="yyyy/MM/dd"
+                                            dateFormat={'yyyy/MM/dd'}
                                             selected={fromDate}
                                             onChange={date => setFromDate(date)}
                                             selectsStart
@@ -171,8 +168,9 @@ export default function List(){
                                         <DatePicker
                                             placeholderText="YYYY/MM/DD - HH:MM:SS"
                                             className="form-control"
-                                            dateFormat="yyyy/MM/dd"
+                                            dateFormat={'yyyy/MM/dd'}
                                             selected={toDate}
+                                            
                                             onChange={date => setToDate(date)}
                                             selectsEnd
                                             endDate={toDate}
@@ -182,7 +180,8 @@ export default function List(){
                                     </div>
                                 </Form.Group>
 
-                                {/* Mobile */}
+                                {/* === Mobile === */}
+                                
                                 <Form.Group as={Col} xs={6} controlId="formDateFrom" className="d-lg-none">
                                     <Form.Label><i className="fa fa-calendar"></i> Date</Form.Label>
                                     <Form.Control
@@ -194,7 +193,6 @@ export default function List(){
                                             value="All dates">
                                             All dates
                                         </option>
-
 
                                     </Form.Control>
                                 </Form.Group>
@@ -209,7 +207,7 @@ export default function List(){
                                     <Form.Control 
                                         as="select" 
                                         defaultValue="Date" 
-                                        onChange={order => setOrderBy(order)}
+                                        onChange={e => setOrderBy(e.target.value)}
                                     >
                                         <option value="Date">Date</option>
                                         <option value="Weapon">Weapon</option>
@@ -225,7 +223,8 @@ export default function List(){
                                     <Button 
                                         variant="secondary"
                                         onClick={handleSearch} >
-                                        <i className="fa fa-search"></i> <span className="d-none d-sm-inline">Buscar</span>
+                                        <i className="fa fa-search"></i> 
+                                        <span className="d-none d-sm-inline">Buscar</span>
                                     </Button>
                                 </Col>
                             </Row>
@@ -238,9 +237,10 @@ export default function List(){
                 <Row>
 
                 {
-                    searchResults ?
+                        searchResults && 
+                        searchResults.length !== 0 &&
 
-                        crimes.map((crime, index) =>
+                        searchResults.map((crime, index) =>
                             
                         <Col className="d-flex mb-3" sm={3} key={index}>
                             <div className="card crime">
@@ -261,8 +261,7 @@ export default function List(){
                         </Col>
                             
                         ) 
-                        
-                        : 'Nenhum item encontrado!'
+ 
                 }
                 </Row>
                                  
@@ -346,9 +345,9 @@ export default function List(){
                                     
                                     modalCrime.victims_crime.length > 0 ?
                                     
-                                    modalCrime.victims_crime.map((victim, index) => (
+                                    modalCrime.victims_crime.map((victim) => (
 
-                                        <div key={index} className="d-flex mb-4 align-items-center">
+                                        <div key={victim.id_crime} className="d-flex mb-4 align-items-center">
                                             <div className="crime__title">
                                                 <div className="img-rounded">
                                                     <Image alt={victim.victim} width={100} height={100} />

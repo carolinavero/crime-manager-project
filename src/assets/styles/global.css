@@ -222,6 +222,12 @@ color: var(--text-color);
 }
 
 
+.many-items {
+    flex-flow: nowrap;
+    scroll-behavior: smooth;
+    overflow-x: auto;
+}
+
 
 /* ======= MEDIA QUERIES ========  */ 
 

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../components/Template/Header';
-import Footer from '../components/Template/Footer';
 import { Col, Row, Container, Form, Button } from 'react-bootstrap';
 
 import DatePicker from 'react-datepicker';
+
+import Header from '../components/Template/Header';
+import Footer from '../components/Template/Footer';
+import NewVictim from '../components/NewVictim';
 
 import api from '../services/api';
 
@@ -18,13 +20,29 @@ export default function Create() {
     const [date, setDate] = useState();
     const [criminal, setCriminal] = useState();
     const [weapon, setWeapon] = useState();
-    const [victim, setVictim] = useState();
+    /* const [victim, setVictim] = useState(); */
 
+    const [newVictim, setNewVictim] = useState(); 
+    
     async function handleCreate(e) {
         e.preventDefault();
         console.log("creating...");
         
     }
+
+    async function handleAddCriminal(e) {
+        e.preventDefault();
+        console.log("new criminal...");
+        
+    }
+
+    async function handleAddVictim(e) {
+        e.preventDefault();
+        console.log("new victim...");
+
+        setNewVictim(<NewVictim />)
+    }
+
 
     // On loading, get crime types
 
@@ -32,7 +50,6 @@ export default function Create() {
 
         async function getTypeOfCrimes() {
             const typesOfCrimes = await api.get(`/crime_types`);
-            console.log("tipos de crimes", typesOfCrimes)
             setTypeOfCrimes(typesOfCrimes.data.data.crime_types);
         }
         
@@ -74,17 +91,17 @@ export default function Create() {
 
                                             <option> Select an option... </option>
                                         
-                                    {
-                                    typeOfCrimes &&
-                                    
-                                    typeOfCrimes.map((option) => (
+                                            {
+                                            typeOfCrimes &&
+                                            
+                                            typeOfCrimes.map((option) => (
 
-                                        <option
-                                            key={option.id_crime_type}
-                                            value={option.id_crime_type}>
-                                            {option.tx_type}
-                                        </option>
-                                    ))} 
+                                                <option
+                                                    key={option.id_crime_type}
+                                                    value={option.id_crime_type}>
+                                                    {option.tx_type}
+                                                </option>
+                                            ))} 
 
                                         </Form.Control>
                                     </Form.Group>
@@ -101,6 +118,7 @@ export default function Create() {
                                                 placeholderText="YYYY/MM/DD - HH:MM:SS"
                                                 className="form-control"
                                                 dateFormat="yyyy/MM/dd"
+                                                selected={date}
                                                 onChange={date => setDate(date)}
 
                                             />
@@ -111,7 +129,7 @@ export default function Create() {
                                 </Col>
                             </Row>
 
-                            <Row>
+                            <Row className="d-flex flex-direction-row many-items">
                                 <Col sm={6}>
 
                                     <Form.Group controlId="formCriminal">
@@ -148,7 +166,80 @@ export default function Create() {
                                     </Form.Group>
                                 </Col>
 
-                                </Row>
+                                <Col sm={6}>
+
+                                    <Form.Group controlId="formCriminal">
+                                        <Form.Label> Criminal</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Type the name of the criminal..."
+                                            onChange={text => setCriminal(text)}
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group controlId="formWeapon">
+                                        <Form.Label> Weapon (optional)</Form.Label>
+
+                                        <Form.Control as="select">
+
+                                            <option> Select an option... </option>
+
+                                            {typeOfWeapons &&
+
+                                                typeOfWeapons.map((option) => (
+
+                                                    <option
+                                                        key={option.id_weapon_type}
+                                                        value={option.id_weapon_type}>
+                                                        {option.tx_weapon_type}
+
+                                                    </option>
+                                                ))}
+
+                                        </Form.Control>
+
+
+                                    </Form.Group>
+                                </Col>
+
+                                <Col sm={6}>
+
+                                    <Form.Group controlId="formCriminal">
+                                        <Form.Label> Criminal</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Type the name of the criminal..."
+                                            onChange={text => setCriminal(text)}
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group controlId="formWeapon">
+                                        <Form.Label> Weapon (optional)</Form.Label>
+
+                                        <Form.Control as="select">
+
+                                            <option> Select an option... </option>
+
+                                            {typeOfWeapons &&
+
+                                                typeOfWeapons.map((option) => (
+
+                                                    <option
+                                                        key={option.id_weapon_type}
+                                                        value={option.id_weapon_type}>
+                                                        {option.tx_weapon_type}
+
+                                                    </option>
+                                                ))}
+
+                                        </Form.Control>
+
+
+                                    </Form.Group>
+                                </Col>
+
+
+                            </Row>
                             
                             
                             <Row className="mb-5">
@@ -156,7 +247,7 @@ export default function Create() {
                                     <Button
                                         variant="link"
                                         className="btn btn-light"
-                                        onClick={(e) => handleCreate(e)} >
+                                        onClick={(e) => handleAddCriminal(e)} >
                                         <i className="fa fa-plus-square-o"></i> Add criminal
                                     </Button>
                                 
@@ -165,27 +256,20 @@ export default function Create() {
                                     <Link to="/weapon"
                                         variant="link"
                                         className="btn btn-light"
-                                        onClick={(e) => handleCreate(e)} >
+                                        /* onClick={(e) => handleCreate(e)} */ >
                                         <i className="fa fa-plus-square-o"></i> Register new weapon
                                     </Link>
                                 
                                 </Col>
                             </Row>
 
-                            <Row>
-                                <Col sm={6}>
 
+                            <Row className="d-flex flex-direction-row many-items">
+                                
+                                <NewVictim /> 
+                               
+                                { newVictim && <NewVictim /> }
 
-                                    <Form.Group  controlId="formVictim">
-                                        <Form.Label> Victim (optional) </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Type the name of the victim..."
-                                            onChange={text => setVictim(text)}
-                                        />
-                                    </Form.Group>
-
-                                </Col>
                             </Row>
 
                             <Row>
@@ -194,7 +278,7 @@ export default function Create() {
                                     <Button
                                         variant="link"
                                         className="btn btn-light"
-                                        onClick={(e) => handleCreate(e)} >
+                                        onClick={(e) => handleAddVictim(e)} >
                                         <i className="fa fa-plus-square-o"></i> Add victim
                                     </Button>
 

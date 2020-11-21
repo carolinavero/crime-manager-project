@@ -19,17 +19,8 @@ export default function NewWeapon() {
         e.preventDefault();
         console.log("create new weapon;...");
         
-        try {
-
-            const response = await api.post('weapons', { weapon })
-            localStorage.setItem('@crime-manager/new', response.data);
-            history.push('/');
-
-        } catch (error) {
-            alert('Falha ao salvar nova arma')
-
-        }
-
+        history.push('/add');
+      
 
     }
 

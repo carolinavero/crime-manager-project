@@ -4,8 +4,6 @@ import { Button } from 'react-bootstrap';
 
 export default function Footer({ footerButton, handleFooterButton, footerLink, footerLinkTo }) {
 
-    
-
     return (
         <>
             <footer>
