@@ -20,14 +20,14 @@ export default function List(){
     // Selected
     const [orderBy, setOrderBy] = useState('Date');
 
-    const [fromDate, setFromDate] = useState(null);
-    const [toDate, setToDate] = useState(null);
+    const [fromDate, setFromDate] = useState();
+    const [toDate, setToDate] = useState();
 
-    /* const [allDates, setAllDates] = useState();
-    const [allTypeOfCrime, setAllTypeOfCrime] = useState(); */
+    const [newFromDate, setNewFromDate] = useState(null);
+    const [newToDate, setNewToDate] = useState(null);
 
-    const [selectedDates, setSelectedDates] = useState('All dates');
-    const [selectedType, setSelectedType] = useState('All crimes');
+    const [selectedDates, setSelectedDates] = useState();
+    const [selectedType, setSelectedType] = useState();
 
     const [searchResults, setSearchResults]  = useState();
 
@@ -47,13 +47,23 @@ export default function List(){
     async function handleSearch(e) {
 
         e.preventDefault();
+        console.log("datas: ", fromDate, toDate)
 
-        const newFromDate = moment(fromDate).format('YYYY/MM/DD - HH:mm:ss')
-        const newToDate = moment(toDate).format('YYYY/MM/DD - HH:mm:ss')
+        if(fromDate !== undefined) {
+            setNewFromDate(moment(fromDate).format('YYYY/MM/DD - HH:mm:ss'));
+        } 
+        if(toDate !== undefined) {
+            setNewToDate(moment(toDate).format('YYYY/MM/DD - HH:mm:ss'));
+        }
     
-        const results = await api.get(
-            `/crimes?crime_type=${selectedType}&order_by=${orderBy}&initial_datetime=${newFromDate}&final_datetime=${newToDate}`
-        );
+        const results = await api.get('/crimes', {
+            params: {
+                crime_type: selectedType,
+                order_by: orderBy,
+                initial_datetime: newFromDate,
+                final_datetime: newToDate,
+            }
+        });
 
         setSearchResults(results.data.data.crimes);
 
@@ -72,6 +82,7 @@ export default function List(){
         
         async function getTypeOfCrimes() {
             const typesOfCrimes = await api.get(`/crime_types`);
+            
             setTypeOfCrimes(typesOfCrimes.data.data.crime_types);
         }
         getTypeOfCrimes();
@@ -128,7 +139,7 @@ export default function List(){
                                     >
 
                                         <option
-                                            value="0">
+                                            value="">
                                             All crimes
                                         </option>
 
@@ -190,7 +201,7 @@ export default function List(){
                                     >
 
                                         <option
-                                            value="All dates">
+                                            value="">
                                             All dates
                                         </option>
 
@@ -384,7 +395,6 @@ export default function List(){
 
                 </Modal>
 
-    
             }
 
         </>
