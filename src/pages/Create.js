@@ -7,53 +7,62 @@ import DatePicker from 'react-datepicker';
 import Header from '../components/Template/Header';
 import Footer from '../components/Template/Footer';
 import NewVictim from '../components/NewVictim';
+import NewCriminal from '../components/NewCriminal';
 
 import api from '../services/api';
 
 export default function Create() {
-
 
     //Select field
     const [typeOfCrimes, setTypeOfCrimes] = useState();
     const [typeOfWeapons, setTypeOfWeapons] = useState();
 
     const [date, setDate] = useState();
-    const [criminal, setCriminal] = useState();
-    const [weapon, setWeapon] = useState();
-    /* const [victim, setVictim] = useState(); */
 
     const [newVictim, setNewVictim] = useState(); 
+    const [newCriminal, setNewCriminal] = useState();
     
     async function handleCreate(e) {
         e.preventDefault();
         console.log("creating...");
+
+        await api.post(`/crime`, {
+            "victim_list": [
+                { "victim_id": 1 }
+            ],
+            "weapon_list": [
+                { "weapon_id": 1 }
+            ],
+            "criminal_list": [
+                { "criminal_id": 1, "id_crime_type": 1 }
+            ],
+            "country": "Japan",
+            "crime_date": "2019-12-11"
+        } );
         
     }
 
-    async function handleAddCriminal(e) {
+    function handleAddCriminal(e) {
         e.preventDefault();
         console.log("new criminal...");
-        
+        setNewCriminal(<NewCriminal />)
     }
 
-    async function handleAddVictim(e) {
+    function handleAddVictim(e) {
         e.preventDefault();
         console.log("new victim...");
-
         setNewVictim(<NewVictim />)
     }
 
 
-    // On loading, get crime types
-
+    // On loading, get crime types and weapons types
     useEffect(() => {
 
         async function getTypeOfCrimes() {
             const typesOfCrimes = await api.get(`/crime_types`);
             setTypeOfCrimes(typesOfCrimes.data.data.crime_types);
         }
-        
-        
+    
         async function getTypeOfWeapons() {
             const typesOfWeapons = await api.get(`/weapon_types`);
             setTypeOfWeapons(typesOfWeapons.data.data.weapon_type);
@@ -61,7 +70,6 @@ export default function Create() {
 
         getTypeOfCrimes();
         getTypeOfWeapons();
-
 
     }, []);
 
@@ -71,7 +79,7 @@ export default function Create() {
         <>
            <Header back title="New crime" />
 
-            <Container className="mt-5">
+            <Container className="main-container" >
                <Row>
                    <Col>
                         <h1>New <span className="letter">C</span>rime</h1>
@@ -129,119 +137,16 @@ export default function Create() {
                                 </Col>
                             </Row>
 
+                            
+                            
                             <Row className="d-flex flex-direction-row many-items">
-                                <Col sm={6}>
 
-                                    <Form.Group controlId="formCriminal">
-                                        <Form.Label> Criminal</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Type the name of the criminal..."
-                                            onChange={text => setCriminal(text)}
-                                        />
-                                    </Form.Group>
+                                <NewCriminal />
 
-                                    <Form.Group controlId="formWeapon">
-                                        <Form.Label> Weapon (optional)</Form.Label>
-
-                                        <Form.Control as="select">
-
-                                            <option> Select an option... </option>
-                                            
-                                            {typeOfWeapons && 
-                                                
-                                                typeOfWeapons.map((option) => (
-
-                                                <option
-                                                    key={option.id_weapon_type}
-                                                    value={option.id_weapon_type}>
-                                                    {option.tx_weapon_type}
-                                                    
-                                                </option>
-                                            ))}
-
-                                        </Form.Control>
-
-
-                                    </Form.Group>
-                                </Col>
-
-                                <Col sm={6}>
-
-                                    <Form.Group controlId="formCriminal">
-                                        <Form.Label> Criminal</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Type the name of the criminal..."
-                                            onChange={text => setCriminal(text)}
-                                        />
-                                    </Form.Group>
-
-                                    <Form.Group controlId="formWeapon">
-                                        <Form.Label> Weapon (optional)</Form.Label>
-
-                                        <Form.Control as="select">
-
-                                            <option> Select an option... </option>
-
-                                            {typeOfWeapons &&
-
-                                                typeOfWeapons.map((option) => (
-
-                                                    <option
-                                                        key={option.id_weapon_type}
-                                                        value={option.id_weapon_type}>
-                                                        {option.tx_weapon_type}
-
-                                                    </option>
-                                                ))}
-
-                                        </Form.Control>
-
-
-                                    </Form.Group>
-                                </Col>
-
-                                <Col sm={6}>
-
-                                    <Form.Group controlId="formCriminal">
-                                        <Form.Label> Criminal</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Type the name of the criminal..."
-                                            onChange={text => setCriminal(text)}
-                                        />
-                                    </Form.Group>
-
-                                    <Form.Group controlId="formWeapon">
-                                        <Form.Label> Weapon (optional)</Form.Label>
-
-                                        <Form.Control as="select">
-
-                                            <option> Select an option... </option>
-
-                                            {typeOfWeapons &&
-
-                                                typeOfWeapons.map((option) => (
-
-                                                    <option
-                                                        key={option.id_weapon_type}
-                                                        value={option.id_weapon_type}>
-                                                        {option.tx_weapon_type}
-
-                                                    </option>
-                                                ))}
-
-                                        </Form.Control>
-
-
-                                    </Form.Group>
-                                </Col>
-
+                                {newCriminal && <NewCriminal />}
 
                             </Row>
-                            
-                            
+                                                        
                             <Row className="mb-5">
                                 <Col sm={3}>
                                     <Button
@@ -256,7 +161,7 @@ export default function Create() {
                                     <Link to="/weapon"
                                         variant="link"
                                         className="btn btn-light"
-                                        /* onClick={(e) => handleCreate(e)} */ >
+                                    >
                                         <i className="fa fa-plus-square-o"></i> Register new weapon
                                     </Link>
                                 
@@ -265,10 +170,11 @@ export default function Create() {
 
 
                             <Row className="d-flex flex-direction-row many-items">
-                                
-                                <NewVictim /> 
-                               
-                                { newVictim && <NewVictim /> }
+                                <NewVictim />
+
+                                { newVictim && 
+                                    <NewVictim />
+                                }
 
                             </Row>
 

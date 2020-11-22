@@ -1,30 +1,48 @@
 import React from 'react';
-import logo from '../../assets/images/logo.png';
-
 import { Link } from 'react-router-dom';
+import { Container, Row, Col } from 'react-bootstrap';
+
+import logo from '../../assets/images/logo.png';
 
 export default function Header({ back, title }) {
 
     return (
         <>
             <header>
-                {
-                    back ?
+                
+                   <Container>
+                       <Row >
 
-                    <div className="d-flex">
+                        {  back ?
 
-                        <Link to="/" className="btn btn-primary btn-back d-flex justify-content-center align-items-center">
-                            <i className="fa fa-arrow-left"></i>
-                        </Link>
+                        <div className="d-flex align-items-center justify-content-center">
 
-                        <div className="d-md-none">
-                            <h3>{title}</h3>
+
+                           <Col xs={3}>
+
+                                <Link to="/" 
+                                    className="btn btn-primary btn-back d-flex justify-content-center align-items-center">
+                                    <i className="fa fa-arrow-left"></i>
+                                </Link>
+
+                           </Col>
+                           <Col xs={9}>
+
+                                <div className="d-md-none">
+                                    <h3>{title}</h3>
+                                </div>
+                           </Col>
+
                         </div>
 
-                    </div>
 
-                    : <img src={logo} alt="Crime Manager"/>   
-                }
+                           : <img src={logo} alt="Crime Manager"/>   
+                        }
+
+                       </Row>
+                   </Container>
+
+                    
             </header>
         </>
     )

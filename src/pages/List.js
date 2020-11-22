@@ -38,7 +38,6 @@ export default function List(){
     const handleClose = () => setShow(false);
     const handleShow = (e, crime) => {
         e.preventDefault();
-        console.log('crime: ', crime);
         setModalCrime(crime);
         setShow(true);
     }
@@ -47,7 +46,6 @@ export default function List(){
     async function handleSearch(e) {
 
         e.preventDefault();
-        console.log("datas: ", fromDate, toDate)
 
         if(fromDate !== undefined) {
             setNewFromDate(moment(fromDate).format('YYYY/MM/DD - HH:mm:ss'));
@@ -68,13 +66,18 @@ export default function List(){
         setSearchResults(results.data.data.crimes);
 
     }
-    
-    console.log("search results : ", searchResults);
 
     // Delete Crime
-    function handleDelete(e) {
+    async function handleDelete(e) {
         e.preventDefault();
         console.log('delete..')
+
+        await api.delete('/crimes', {
+            /* params: {
+                crime_id: id_crime ,
+                
+            } */
+        });
     }
     
     // On loading, get all values
@@ -82,7 +85,6 @@ export default function List(){
         
         async function getTypeOfCrimes() {
             const typesOfCrimes = await api.get(`/crime_types`);
-            
             setTypeOfCrimes(typesOfCrimes.data.data.crime_types);
         }
         getTypeOfCrimes();
@@ -94,7 +96,7 @@ export default function List(){
         <>
             <Header />
 
-            <Container className="mt-5">
+            <Container className="main-container">
 
                 <Row>
                     <Col xs={12} sm={8}>
@@ -102,7 +104,6 @@ export default function List(){
                     </Col>
 
                     <Col sm={4} className="d-flex justify-content-end">
-                        
                         <Link to="/add" 
                             className="btn btn-primary d-none d-sm-inline-block"
                         >
@@ -137,7 +138,6 @@ export default function List(){
                                         value={selectedType}
                                         onChange={e => setSelectedType(e.target.value)}
                                     >
-
                                         <option
                                             value="">
                                             All crimes
@@ -199,7 +199,6 @@ export default function List(){
                                         as="select"
                                         onChange={() => {}}
                                     >
-
                                         <option
                                             value="">
                                             All dates
@@ -251,14 +250,15 @@ export default function List(){
                         searchResults && 
                         searchResults.length !== 0 &&
 
-                        searchResults.map((crime, index) =>
+                        searchResults.map((crime) =>
                             
-                        <Col className="d-flex mb-3" sm={3} key={index}>
-                            <div className="card crime">
+                            <Col className="d-flex mb-3" sm={3} key={crime.id_crime} >
+                            <div className="card crime" >
                                 <div className="crime__title">
                                     {crime.criminal_crime_types.map((types) => types.crime_type)}
                                 </div>
                                 <div className="crime__small mb-3">Crime type</div>
+                                   
                                     <div className="crime__date"> {moment(crime.crime_date).format('YYYY/MM/DD - HH:mm:ss')}</div>
                                 <div className="crime__small">{crime.country}</div>
 
@@ -305,7 +305,7 @@ export default function List(){
                                
                                     modalCrime.criminal_crime_types.map((types) => (
                                         
-                                        <>
+                                        <div key={types.id_crime}>
                                             <div className="crime__title">
                                                 {types.crime_type} 
                                             </div>
@@ -325,8 +325,8 @@ export default function List(){
 
                                                     
                                                     {       
-                                                        modalCrime.weapons_crime.map((weapon, index) => (
-                                                            <div key={index}>
+                                                        modalCrime.weapons_crime.map((weapon) => (
+                                                            <div key={weapon.id_crime}>
                                                                 {weapon.weapon}
                                                                 <p className="crime__small">{weapon.weapon_type}</p>
                                                             </div>
@@ -337,7 +337,7 @@ export default function List(){
 
                                             </div>
 
-                                        </>                           
+                                        </div>                           
                                     ))
                                 } 
                                     

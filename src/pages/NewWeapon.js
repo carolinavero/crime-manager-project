@@ -40,7 +40,8 @@ export default function NewWeapon() {
         <>
             <Header back title="New weapon" />
 
-            <Container className="mt-5">
+            <Container className="main-container">
+
                 <Row>
                     <Col>
                         <h1>New <span className="letter">W</span>eapon</h1>
@@ -48,21 +49,18 @@ export default function NewWeapon() {
                 </Row>
 
                 <Row className="mb-5">
-                    <Col>
+                    <Col sm={6}>
 
                         <Form>
-                            <Form.Group as={Col} sm={6} controlId="formTypeOfWeapon">
+                            <Form.Group controlId="formTypeOfWeapon">
                                 <Form.Label>Weapon type</Form.Label>
                                 <Form.Control as="select" 
                                     onChange={e => setSelectedWeapon(e.target.value)} >
 
                                     <option> Select an option... </option>
-                                    
                                     {
                                     typeOfWeapons && 
-                                    
                                     typeOfWeapons.map((option) => (
-
                                         <option
                                             key={option.id_weapon_type}
                                             value={option.id_weapon_type}>
@@ -73,7 +71,7 @@ export default function NewWeapon() {
                                 </Form.Control>
                             </Form.Group>
                            
-                            <Form.Group as={Col} sm={6} controlId="formWeapon">
+                            <Form.Group controlId="formWeapon">
                                 <Form.Label> Weapon</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -82,20 +80,18 @@ export default function NewWeapon() {
                                 />
                             </Form.Group>
                            
-                            <Row className="mt-5">
-                                <Col sm={6}>
-                                    <Button
-                                        variant="primary"
-                                        onClick={(e) => handleCreate(e)} >
-                                        <i className="fa fa-plus-square-o"></i> Save new weapon
-                                    </Button>
-                                </Col>
-                            </Row>
-
+                            <Button
+                                variant="primary"
+                                className="mt-4"
+                                onClick={(e) => handleCreate(e)} >
+                                <i className="fa fa-plus-square-o"></i> Save new weapon
+                            </Button>
+                              
                         </Form>
 
                     </Col>
                 </Row>
+
             </Container>
 
             <Footer />
