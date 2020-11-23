@@ -10,39 +10,37 @@ export default function Header({ back, title }) {
         <>
             <header>
                 
-                   <Container>
-                       <Row >
+                <Container>
+                    <Row >
 
-                        {  back ?
+                    {  back ?
 
-                        <div className="d-flex align-items-center justify-content-center">
+                    <div className="d-flex align-items-center justify-content-center">
 
+                        <Col xs={3}>
 
-                           <Col xs={3}>
+                            <Link to="/" 
+                                className="btn btn-primary btn-back d-flex justify-content-center align-items-center">
+                                <i className="fa fa-arrow-left"></i>
+                            </Link>
 
-                                <Link to="/" 
-                                    className="btn btn-primary btn-back d-flex justify-content-center align-items-center">
-                                    <i className="fa fa-arrow-left"></i>
-                                </Link>
+                        </Col>
+                        <Col xs={9}>
 
-                           </Col>
-                           <Col xs={9}>
+                            <div className="d-md-none">
+                                <h3>{title}</h3>
+                            </div>
+                        </Col>
 
-                                <div className="d-md-none">
-                                    <h3>{title}</h3>
-                                </div>
-                           </Col>
+                    </div>
 
-                        </div>
+                    : <img src={logo} alt="Crime Manager"/>   
 
+                    }
 
-                           : <img src={logo} alt="Crime Manager"/>   
-                        }
+                    </Row>
+                </Container>
 
-                       </Row>
-                   </Container>
-
-                    
             </header>
         </>
     )

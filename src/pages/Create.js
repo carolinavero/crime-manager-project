@@ -3,55 +3,103 @@ import { Link } from 'react-router-dom';
 import { Col, Row, Container, Form, Button } from 'react-bootstrap';
 
 import DatePicker from 'react-datepicker';
+import moment from 'moment';
 
 import Header from '../components/Template/Header';
 import Footer from '../components/Template/Footer';
-import NewVictim from '../components/NewVictim';
-import NewCriminal from '../components/NewCriminal';
 
 import api from '../services/api';
 
 export default function Create() {
 
-    //Select field
+    //Select fields
     const [typeOfCrimes, setTypeOfCrimes] = useState();
-    const [typeOfWeapons, setTypeOfWeapons] = useState();
+    const [listOfWeapons, setListOfWeapons] = useState();
+    const [listOfCriminals, setListOfCriminals] = useState();
+    const [listOfVictims, setListOfVictims] = useState();
 
     const [date, setDate] = useState();
 
-    const [newVictim, setNewVictim] = useState(); 
-    const [newCriminal, setNewCriminal] = useState();
+    const [victims, setVictims] = useState(['']); 
+    const [criminals, setCriminals] = useState([{
+        criminal: '',
+        weapon: ''
+    }]);
+    const [types, setTypes] = useState(['']);
     
+
     async function handleCreate(e) {
         e.preventDefault();
-        console.log("creating...");
 
-        await api.post(`/crime`, {
-            "victim_list": [
-                { "victim_id": 1 }
-            ],
-            "weapon_list": [
-                { "weapon_id": 1 }
-            ],
-            "criminal_list": [
-                { "criminal_id": 1, "id_crime_type": 1 }
-            ],
-            "country": "Japan",
-            "crime_date": "2019-12-11"
-        } );
+        const victimList = [];
+        victims.forEach(item => {
+            victimList.push({ "victim_id": item} )
+        });
+
+        const weaponList = [];
+        const criminalList = [];
+        criminals.forEach(item => {
+            console.log(item)
+            weaponList.push({ "weapon_id": item.weapon});
+            criminalList.push({ "criminal_id": item.criminal, "id_crime_type": 1});
+        })
+
+        const newCrime = {
+            "victim_list": victimList,
+            "weapon_list": weaponList,
+            "criminal_list": criminalList,
+            "country": "Brasil",
+            "crime_date": moment(date).format('YYYY/MM/DD')
+        };
+
+        console.log(newCrime);
+
+        //await api.post(`/crime`, crime);
         
     }
 
     function handleAddCriminal(e) {
         e.preventDefault();
-        console.log("new criminal...");
-        setNewCriminal(<NewCriminal />)
+        setCriminals([...criminals, {
+            criminal: '', 
+            weapon: ''
+        }]);
     }
 
     function handleAddVictim(e) {
         e.preventDefault();
-        console.log("new victim...");
-        setNewVictim(<NewVictim />)
+        setVictims([...victims, '']);
+    }
+
+    function changeCriminal(value, index){
+        const criminal2 = criminals.map((item, i) => {
+            if (i === index) {
+                item.criminal = value;
+            }
+            return item;
+        })
+        setCriminals(criminal2);
+    }
+
+    function changeWeapon(value, index) {
+        const weapon2 = criminals.map((item, i) => {
+            if (i === index) {
+                item.weapon = value;
+            }
+            return item;
+        })
+        setCriminals(weapon2);
+    }
+
+    function changeVictim(value, index) {
+        const victim2 = victims.map((item, i) => {
+            if(i === index) {
+                item = value;
+            }
+            return item;
+        })
+        console.log("victim2", victim2);
+        setVictims(victim2);
     }
 
 
@@ -62,14 +110,23 @@ export default function Create() {
             const typesOfCrimes = await api.get(`/crime_types`);
             setTypeOfCrimes(typesOfCrimes.data.data.crime_types);
         }
-    
-        async function getTypeOfWeapons() {
-            const typesOfWeapons = await api.get(`/weapon_types`);
-            setTypeOfWeapons(typesOfWeapons.data.data.weapon_type);
+        async function getListOfWeapons() {
+            const weapons = await api.get(`/weapons`);
+            setListOfWeapons(weapons.data.data);
+        }
+        async function getListOfCriminals() {
+            const criminals = await api.get(`/criminals`);
+            setListOfCriminals(criminals.data.data);
+        }
+        async function getListOfVictims() {
+            const victims = await api.get(`/victims`);
+            setListOfVictims(victims.data.data);
         }
 
         getTypeOfCrimes();
-        getTypeOfWeapons();
+        getListOfWeapons();
+        getListOfCriminals();
+        getListOfVictims();
 
     }, []);
 
@@ -95,7 +152,9 @@ export default function Create() {
                                 <Col sm={6}>
                                     <Form.Group controlId="formTypeOfCrimes">
                                         <Form.Label>Type of crime</Form.Label>
-                                        <Form.Control as="select">
+                                        <Form.Control as="select" 
+                                            selected={types} 
+                                            onChange={(types) => setTypes(types)}>
 
                                             <option> Select an option... </option>
                                         
@@ -138,12 +197,65 @@ export default function Create() {
                             </Row>
 
                             
-                            
                             <Row className="d-flex flex-direction-row many-items">
 
-                                <NewCriminal />
+                            {   criminals &&
+                                criminals.map((item, index) => (
 
-                                {newCriminal && <NewCriminal />}
+                                <Col sm={6} key={index}>
+
+                                    <Form.Group className="w-100" controlId="formCriminal">
+                                        <Form.Label> Criminal</Form.Label>
+                                        <Form.Control
+                                            as="select"
+                                            value={item.criminal}
+                                            onChange={e => changeCriminal(e.target.value, index)}
+                                        >
+                                            <option> Select an option... </option>
+                                            {listOfCriminals &&
+
+                                                listOfCriminals.map((option) => (
+
+                                                    <option
+                                                        key={option.id_criminal}
+                                                        value={option.id_criminal}
+                                                    >
+                                                        {option.tx_name}
+                                                    </option>
+                                                ))}
+                                        </Form.Control>
+
+                                    </Form.Group>
+
+                                    <Form.Group controlId="formWeapon">
+                                        <Form.Label> Weapon (optional)</Form.Label>
+                                        <Form.Control 
+                                            as="select" 
+                                            value={item.weapon}
+                                            onChange={e => changeWeapon(e.target.value, index)}
+                                        >
+                                            <option> Select an option... </option>
+
+                                            {listOfWeapons &&
+
+                                                listOfWeapons.map((option) => (
+
+                                                    <option
+                                                        key={option.id_weapon}
+                                                        value={option.id_weapon}
+                                                        
+                                                    >
+                                                        {option.tx_model}
+                                                    </option>
+                                            ))}
+
+                                        </Form.Control>
+
+                                    </Form.Group>
+                                </Col>
+
+                                ))
+                            }
 
                             </Row>
                                                         
@@ -168,12 +280,40 @@ export default function Create() {
                                 </Col>
                             </Row>
 
-
                             <Row className="d-flex flex-direction-row many-items">
-                                <NewVictim />
+                                {
+                                    victims.map((victim, index) => (
+                                        <Col sm={6} key={index}>
 
-                                { newVictim && 
-                                    <NewVictim />
+                                            <Form.Group className="w-100" controlId="formVictim">
+                                                <Form.Label> Victim (optional) </Form.Label>
+                                               
+                                                <Form.Control
+                                                    as="select"
+                                                    value={victim}
+                                                    onChange={e => changeVictim(e.target.value, index)}
+                                                >
+                                                    <option> Select an option... </option>
+
+                                                    {listOfVictims &&
+
+                                                        listOfVictims.map((option) => (
+
+                                                            <option
+                                                                key={option.id_victim}
+                                                                value={option.id_victim}
+
+                                                            >
+                                                                {option.tx_name}
+                                                            </option>
+                                                        ))}
+
+                                                </Form.Control>
+
+                                            </Form.Group>
+
+                                        </Col>
+                                    ))
                                 }
 
                             </Row>

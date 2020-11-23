@@ -21,7 +21,6 @@ export default function NewWeapon() {
         
         history.push('/add');
       
-
     }
 
     // On loading, get weapon types
@@ -55,6 +54,7 @@ export default function NewWeapon() {
                             <Form.Group controlId="formTypeOfWeapon">
                                 <Form.Label>Weapon type</Form.Label>
                                 <Form.Control as="select" 
+                                    value={selectedWeapon}
                                     onChange={e => setSelectedWeapon(e.target.value)} >
 
                                     <option> Select an option... </option>
@@ -75,6 +75,7 @@ export default function NewWeapon() {
                                 <Form.Label> Weapon</Form.Label>
                                 <Form.Control
                                     type="text"
+                                    
                                     placeholder="Type the name of the weapon..."
                                     onChange={e => setWeapon(e.target.value)}
                                 />

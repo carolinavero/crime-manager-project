@@ -68,16 +68,20 @@ export default function List(){
     }
 
     // Delete Crime
-    async function handleDelete(e) {
+    async function handleDelete(e, id_crime) {
         e.preventDefault();
-        console.log('delete..')
-
-        await api.delete('/crimes', {
-            /* params: {
-                crime_id: id_crime ,
+  
+        await api.delete('/crime', {
+            params: {
+                crime_id: id_crime,
                 
-            } */
+            } 
         });
+        setShow(false);
+
+        const notDeleted = searchResults.filter(crime => crime.id_crime !== id_crime);
+        setSearchResults(notDeleted);
+
     }
     
     // On loading, get all values
@@ -98,12 +102,12 @@ export default function List(){
 
             <Container className="main-container">
 
-                <Row>
+                <Row className="d-flex justify-content-between">
                     <Col xs={12} sm={8}>
                         <h1>Crime <span className="letter">L</span>ist</h1>
                     </Col>
 
-                    <Col sm={4} className="d-flex justify-content-end">
+                    <Col sm={3} className="d-flex">
                         <Link to="/add" 
                             className="btn btn-primary d-none d-sm-inline-block"
                         >
@@ -114,9 +118,7 @@ export default function List(){
 
                 <Row className="mb-5">
                     <Col>
-
                         <Form>
-
                             <Form.Row>
                                 <Form.Group as={Col} xs={12} sm={12} md={12} lg={6}  controlId="formTextFilter">
                                     <Form.Label>Text filter</Form.Label>
@@ -138,8 +140,7 @@ export default function List(){
                                         value={selectedType}
                                         onChange={e => setSelectedType(e.target.value)}
                                     >
-                                        <option
-                                            value="">
+                                        <option value="">
                                             All crimes
                                         </option>
 
@@ -199,8 +200,7 @@ export default function List(){
                                         as="select"
                                         onChange={() => {}}
                                     >
-                                        <option
-                                            value="">
+                                        <option value="">
                                             All dates
                                         </option>
 
@@ -234,7 +234,7 @@ export default function List(){
                                         variant="secondary"
                                         onClick={handleSearch} >
                                         <i className="fa fa-search"></i> 
-                                        <span className="d-none d-sm-inline">Buscar</span>
+                                        <span className="d-none d-sm-inline">Search</span>
                                     </Button>
                                 </Col>
                             </Row>
@@ -292,68 +292,74 @@ export default function List(){
                 >
 
                     <Modal.Body>
-                        <div className="d-flex justify-content-between">
-                            <h4>Crime</h4>
-                            <a href="/" onClick={(e) => handleDelete(e)}>
-                                <i className="fa fa-trash"></i>
-                            </a>
-                        </div>
-
+                        
                         <div className="mb-3">
+                            <div className="d-flex justify-content-between">
+                                <h4>Crime</h4> 
+                                <a href="/"
+                                    onClick={(e) => handleDelete(e, modalCrime.id_crime)}>
+                                    <i className="fa fa-trash"></i>
+                                </a>
 
-                               { modalCrime.criminal_crime_types &&
-                               
-                                    modalCrime.criminal_crime_types.map((types) => (
-                                        
-                                        <div key={types.id_crime}>
-                                            <div className="crime__title">
-                                                {types.crime_type} 
-                                            </div>
+                            </div>
 
-                                            <div className="crime__small mb-3">Crime type</div>
-                                            <div className="crime__date"> {moment(modalCrime.crime_date).format('YYYY/MM/DD - HH:mm:ss')}</div>
-                                            <div className="crime__small">{modalCrime.country}</div>
+                            {modalCrime.criminal_crime_types &&
 
-                                            <h4 className="mt-3">Criminal</h4>
-                                            <div className="d-flex">
-                                                <div className="img-rounded">
-                                                    <Image alt={types.criminal} width={100} height={100} />
-                                                </div>
-                                                <div>
-                                                    {types.criminal}
-                                                    <p className="crime__small">Criminal</p>
+                                modalCrime.criminal_crime_types.map((types) => (
 
-                                                    
-                                                    {       
-                                                        modalCrime.weapons_crime.map((weapon) => (
-                                                            <div key={weapon.id_crime}>
-                                                                {weapon.weapon}
-                                                                <p className="crime__small">{weapon.weapon_type}</p>
-                                                            </div>
-                                                        ))                                                        
-                                                    }
-                                                    
-                                                </div>
+                                    <div key={types.id_crime}>
+                                        <div className="crime__title">
+                                            {types.crime_type}
+                                        </div>
+                                        <div className="crime__small mb-3">Crime type</div>
+                                    </div>
+                                ))
+                            } 
 
-                                            </div>
+                            <div className="crime__date"> {moment(modalCrime.crime_date).format('YYYY/MM/DD - HH:mm:ss')}</div>
+                            <div className="crime__small">{modalCrime.country}</div>
 
-                                        </div>                           
-                                    ))
-                                } 
+                            { modalCrime.criminal_crime_types &&
+                            
+                                modalCrime.criminal_crime_types.map((types) => (
                                     
+                                    <div key={types.id_crime}>
+
+                                        <h4 className="mt-3">Criminal</h4>
+                                        <div className="d-flex">
+                                            <div className="img-rounded">
+                                                <Image alt={types.criminal} width={100} height={100} />
+                                            </div>
+                                            <div>
+                                                {types.criminal}
+                                                <p className="crime__small">Criminal</p>
+                          
+                                                {       
+                                                    modalCrime.weapons_crime.map((weapon) => (
+                                                        <div key={weapon.id_crime}>
+                                                            {weapon.weapon}
+                                                            <p className="crime__small">{weapon.weapon_type}</p>
+                                                        </div>
+                                                    ))                                                        
+                                                }
+                                                
+                                            </div>
+
+                                        </div>
+
+                                    </div>                           
+                                ))
+                            } 
 
                         </div>
 
                         <div>
                             
-
                             <h4>Victim</h4>
-                           
 
                                { 
 
                                     modalCrime.victims_crime &&
-                                    
                                     modalCrime.victims_crime.length > 0 ?
                                     
                                     modalCrime.victims_crime.map((victim) => (
