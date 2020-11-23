@@ -16,16 +16,12 @@ export default function NewWeapon() {
     const history = useHistory();
 
     async function handleCreate(e) {
-        e.preventDefault();
-        console.log("create new weapon;...");
-        
+        e.preventDefault();       
         history.push('/add');
-      
     }
 
     // On loading, get weapon types
     useEffect(() => {
-
         async function getTypeOfWeapons() {
             const typesOfWeapons = await api.get(`/weapon_types`);
             setTypeOfWeapons(typesOfWeapons.data.data.weapon_type);
@@ -33,7 +29,6 @@ export default function NewWeapon() {
         getTypeOfWeapons();
 
     }, []);
-
 
     return (
         <>

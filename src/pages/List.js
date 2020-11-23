@@ -156,7 +156,6 @@ export default function List(){
                                     </Form.Control>
                                 </Form.Group>
 
-
                                 <Form.Group as={Col} xs={6} sm={3} controlId="formDateFrom" className="d-none d-lg-inline-block">
                                     <Form.Label><i className="fa fa-calendar"></i> Date - From</Form.Label>
                                     <div>
@@ -243,36 +242,34 @@ export default function List(){
                     </Col>
                 </Row>
 
-                
                 <Row>
 
                 {
-                        searchResults && 
-                        searchResults.length !== 0 &&
+                    searchResults && 
+                    searchResults.length !== 0 &&
 
-                        searchResults.map((crime) =>
-                            
-                            <Col className="d-flex mb-3" sm={3} key={crime.id_crime} >
-                            <div className="card crime" >
-                                <div className="crime__title">
-                                    {crime.criminal_crime_types.map((types) => types.crime_type)}
-                                </div>
-                                <div className="crime__small mb-3">Crime type</div>
-                                   
-                                    <div className="crime__date"> {moment(crime.crime_date).format('YYYY/MM/DD - HH:mm:ss')}</div>
-                                <div className="crime__small">{crime.country}</div>
-
-                                <div className="crime__zoom-button">
-                                    <a href="/" className="zoom-button" onClick={(e) => handleShow(e, crime)}>
-                                        <i className="fa fa-search-plus"></i>
-                                    </a>
-                                </div>
-
+                    searchResults.map((crime) =>
+                        
+                        <Col className="d-flex mb-3" sm={3} key={crime.id_crime} >
+                        <div className="card crime" >
+                            <div className="crime__title">
+                                {crime.criminal_crime_types.map((types) => types.crime_type)}
                             </div>
-                        </Col>
-                            
-                        ) 
- 
+                            <div className="crime__small mb-3">Crime type</div>
+                                
+                                <div className="crime__date"> {moment(crime.crime_date).format('YYYY/MM/DD - HH:mm:ss')}</div>
+                            <div className="crime__small">{crime.country}</div>
+
+                            <div className="crime__zoom-button">
+                                <a href="/" className="zoom-button" onClick={(e) => handleShow(e, crime)}>
+                                    <i className="fa fa-search-plus"></i>
+                                </a>
+                            </div>
+
+                        </div>
+                    </Col>
+                        
+                    ) 
                 }
                 </Row>
                                  
@@ -285,17 +282,20 @@ export default function List(){
                 modalCrime && 
 
                 <Modal
-
                     show={show}
                     className="crime__modal"
                     onHide={handleClose}
                 >
+                    
+                    <Header  title="Crime details" close={handleClose} />
 
-                    <Modal.Body>
+                    <Modal.Body className="modal-content-details">
+
+                        <h4 className="d-flex d-sm-none">Crime</h4>
                         
-                        <div className="mb-3">
+                        <div className="mb-3 ">
                             <div className="d-flex justify-content-between">
-                                <h4>Crime</h4> 
+                                <h4 className="d-none d-sm-flex">Crime</h4> 
                                 <a href="/"
                                     onClick={(e) => handleDelete(e, modalCrime.id_crime)}>
                                     <i className="fa fa-trash"></i>

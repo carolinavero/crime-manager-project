@@ -12,8 +12,8 @@
     --box-shadow-color: #00000029;
     --box-shadow: 0px 3px 3px var(--box-shadow-color);
     --box-shadow-footer: 0px -3px 3px var(--box-shadow-color);
-    --box-shadow-light: 3px 3px 5px var(--box-shadow-color); /* #FFFFFF4A */ /* Button */
-   /* --box-shadow-card: 3px 3px 5px var(--box-shadow-color);  Card */
+    --box-shadow-light: 3px 3px 5px var(--box-shadow-color);
+    --box-shadow-double: -3px -3px 5px 0px #ffffff, 3px 3px 5px 0px #b3b3b3;
 
     --max-width: 1456px;
 
@@ -49,12 +49,12 @@ h3 {
 }
 
 .container {
-
     max-width: var(--max-width);
+    margin-top: 6rem;
 }
 .main-container {
     margin-bottom: 7rem;
-    margin-top: 5rem;
+    margin-top: 7rem;
 }
 
 header {
@@ -67,6 +67,10 @@ header {
 
     display: flex;
     align-items: center;
+
+    position: fixed;
+    top: 0;
+    z-index: 999;
     
 }
 
@@ -113,7 +117,7 @@ input,
 .btn {
     border-radius: 3px;
     border: none;
-    box-shadow: var(--box-shadow-light);
+    box-shadow: var(--box-shadow-double);
 
     color: var(--dark-color);
     text-transform: uppercase;
@@ -178,7 +182,6 @@ i {
 .btn-light:not(:disabled):not(.disabled):active {
     color: var(--arrow-color);
     background-color: var(--white-color);
-
 }
 
 .btn-back {
@@ -190,12 +193,16 @@ i {
 
 .crime {
     background-color: var(--bg-color);
-    box-shadow: var(--box-shadow-light);
+    box-shadow: var(--box-shadow-double);
     border-radius: 3px;
     color: var(--text-color);
     padding: 20px;
     border: none;
     width: 100%;
+
+    transition: all ease .5s;
+
+    /* background: #F1F9FF 0% 0% no-repeat padding-box; */
 }
 
 .crime .crime__title,
@@ -217,6 +224,9 @@ i {
 }
 
 /* Modal Crime */ 
+.modal header {
+    display: none;
+}
 .crime__modal {
     color: var(--font-color);
 }
@@ -245,11 +255,10 @@ i {
 @media(max-width: 500px) {
     h1 {
         font-size: 18px;
-    }
-
+    } 
     .main-container {
         margin-bottom: 3rem;
-        margin-top: 2rem;
+        margin-top: 6rem;
     }
     
     .btn {
@@ -260,7 +269,33 @@ i {
         height: 30px;
         line-height: normal;
     }
+
     header .btn-primary {
         height: 30px;
+    }
+
+    .crime__modal {
+        padding-left: 0;
+    }
+
+    .modal header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .modal header h3 {
+        color: var(--dark-color);
+        font-size: 18px;
+    }
+    .modal-dialog {
+        margin: 0;
+    }
+    .modal-content {
+        width: 100vw;
+        min-height: 100vh;
+        border-radius: 0;
+    }
+    .modal-content-details {
+        margin-top: 4rem;
     }
 }

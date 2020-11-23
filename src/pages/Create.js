@@ -19,14 +19,12 @@ export default function Create() {
     const [listOfVictims, setListOfVictims] = useState();
 
     const [date, setDate] = useState();
-
     const [victims, setVictims] = useState(['']); 
     const [criminals, setCriminals] = useState([{
         criminal: '',
         weapon: ''
     }]);
     const [types, setTypes] = useState(['']);
-    
 
     async function handleCreate(e) {
         e.preventDefault();
@@ -39,7 +37,6 @@ export default function Create() {
         const weaponList = [];
         const criminalList = [];
         criminals.forEach(item => {
-            console.log(item)
             weaponList.push({ "weapon_id": item.weapon});
             criminalList.push({ "criminal_id": item.criminal, "id_crime_type": 1});
         })
@@ -49,12 +46,12 @@ export default function Create() {
             "weapon_list": weaponList,
             "criminal_list": criminalList,
             "country": "Brasil",
-            "crime_date": moment(date).format('YYYY/MM/DD')
+            "crime_date": moment(date).format('YYYY/MM/DD - HH:mm:ss')
         };
 
         console.log(newCrime);
 
-        //await api.post(`/crime`, crime);
+        await api.post(`/crime`, newCrime);
         
     }
 
@@ -98,7 +95,6 @@ export default function Create() {
             }
             return item;
         })
-        console.log("victim2", victim2);
         setVictims(victim2);
     }
 
@@ -184,7 +180,7 @@ export default function Create() {
                                             <DatePicker
                                                 placeholderText="YYYY/MM/DD - HH:MM:SS"
                                                 className="form-control"
-                                                dateFormat="yyyy/MM/dd"
+                                                dateFormat="yyyy/MM/dd H:mm:ss"
                                                 selected={date}
                                                 onChange={date => setDate(date)}
 
