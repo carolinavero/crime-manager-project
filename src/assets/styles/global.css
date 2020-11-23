@@ -189,6 +189,10 @@ i {
     height: 40px;
 }
 
+.btn-back i {
+    margin: 0;
+}
+
 /* Card */
 
 .crime {
@@ -247,41 +251,65 @@ i {
     flex-flow: nowrap;
     scroll-behavior: smooth;
     overflow-x: auto;
+    margin-bottom: 1rem;
 }
 
 
 /* ======= MEDIA QUERIES ========  */ 
 
 @media(max-width: 500px) {
-    h1 {
+    h1, h2, h3, h4 {
         font-size: 18px;
     } 
     .main-container {
         margin-bottom: 3rem;
         margin-top: 6rem;
     }
-    
-    .btn {
-        box-shadow: 3px 3px 3px grey, 0 3px 10px 3px white;
+
+    .btn{
+        height: 30px;
+        line-height: 18px;
     }
+    
+ /*    .btn {
+        box-shadow: 3px 3px 3px grey, 0 3px 10px 3px white;
+    } */
     
     .btn-primary {
         height: 30px;
         line-height: normal;
     }
 
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        text-align: center;
+    }
     header .btn-primary {
         height: 30px;
+
+        
+    }
+
+    .many-items {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 
     .crime__modal {
         padding-left: 0;
+
     }
 
     .modal header {
         display: flex;
         align-items: center;
         justify-content: center;
+
+        text-align: center;
     }
     .modal header h3 {
         color: var(--dark-color);
@@ -290,12 +318,37 @@ i {
     .modal-dialog {
         margin: 0;
     }
+    .modal-card {
+        box-shadow: var(--box-shadow-double);
+        border-radius: 3px;
+        padding: 15px;
+    }
     .modal-content {
         width: 100vw;
         min-height: 100vh;
         border-radius: 0;
     }
+    .modal-content h4 {
+        display: none;
+    }
+
+    .modal-content .criminal-block,
+    .modal-content .victim-block {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: flex-start;
+        justify-content: flex-end;
+    }
+    .modal-content .img-avatar {
+        width: 40px;
+        height: 40px;
+        margin-left: 15px;
+    }
     .modal-content-details {
         margin-top: 4rem;
+    }
+    footer {
+        height: 60px;
+        padding: 0 15px;
     }
 }

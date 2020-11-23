@@ -198,7 +198,7 @@ export default function Create() {
                             {   criminals &&
                                 criminals.map((item, index) => (
 
-                                <Col sm={6} key={index}>
+                                <Col xs={12} sm={6} key={index}>
 
                                     <Form.Group className="w-100" controlId="formCriminal">
                                         <Form.Label> Criminal</Form.Label>
@@ -265,7 +265,7 @@ export default function Create() {
                                     </Button>
                                 
                                 </Col>
-                                <Col sm={3}>
+                                <Col className="d-none d-sm-block" sm={3}>
                                     <Link to="/weapon"
                                         variant="link"
                                         className="btn btn-light"
@@ -279,7 +279,7 @@ export default function Create() {
                             <Row className="d-flex flex-direction-row many-items">
                                 {
                                     victims.map((victim, index) => (
-                                        <Col sm={6} key={index}>
+                                        <Col xs={12} sm={6} key={index}>
 
                                             <Form.Group className="w-100" controlId="formVictim">
                                                 <Form.Label> Victim (optional) </Form.Label>

@@ -290,10 +290,13 @@ export default function List(){
                     <Modal.Body className="modal-content-details">
 
                         <h4 className="d-flex d-sm-none">Crime</h4>
-                        
+
+                        <div className="modal-card">
+                       
                         <div className="mb-3 ">
-                            <div className="d-flex justify-content-between">
-                                <h4 className="d-none d-sm-flex">Crime</h4> 
+
+                            <div className="justify-content-between d-none d-sm-flex">
+                                <h4>Crime</h4> 
                                 <a href="/"
                                     onClick={(e) => handleDelete(e, modalCrime.id_crime)}>
                                     <i className="fa fa-trash"></i>
@@ -305,17 +308,24 @@ export default function List(){
 
                                 modalCrime.criminal_crime_types.map((types) => (
 
-                                    <div key={types.id_crime}>
+                                    <div key={types.id_crime} className="d-flex justify-content-between align-items-flex-start">
+
                                         <div className="crime__title">
                                             {types.crime_type}
+                                            <div className="crime__small mb-3">Crime type</div>
                                         </div>
-                                        <div className="crime__small mb-3">Crime type</div>
+
+                                        <a href="/" className="d-sm-none d-flex"
+                                            onClick={(e) => handleDelete(e, modalCrime.id_crime)}>
+                                            <i className="fa fa-trash"></i>
+                                        </a>
+
                                     </div>
                                 ))
                             } 
 
                             <div className="crime__date"> {moment(modalCrime.crime_date).format('YYYY/MM/DD - HH:mm:ss')}</div>
-                            <div className="crime__small">{modalCrime.country}</div>
+                            <div className="crime__small mb-4">{modalCrime.country}</div>
 
                             { modalCrime.criminal_crime_types &&
                             
@@ -323,9 +333,9 @@ export default function List(){
                                     
                                     <div key={types.id_crime}>
 
-                                        <h4 className="mt-3">Criminal</h4>
-                                        <div className="d-flex">
-                                            <div className="img-rounded">
+                                        <h4>Criminal</h4>
+                                        <div className="d-flex criminal-block">
+                                            <div className="img-rounded img-avatar">
                                                 <Image alt={types.criminal} width={100} height={100} />
                                             </div>
                                             <div>
@@ -362,10 +372,10 @@ export default function List(){
                                     
                                     modalCrime.victims_crime.map((victim) => (
 
-                                        <div key={victim.id_crime} className="d-flex mb-4 align-items-center">
+                                        <div key={victim.id_crime} className="victim-block d-flex mb-4 align-items-center">
                                             <div className="crime__title">
-                                                <div className="img-rounded">
-                                                    <Image alt={victim.victim} width={100} height={100} />
+                                                <div className="img-rounded img-avatar">
+                                                    <Image  alt={victim.victim} height={100} width={100}  />
                                                 </div>
                                             </div>
                                             <div>
@@ -394,6 +404,11 @@ export default function List(){
                                 }  
 
                         </div>
+
+
+                        </div>
+
+                        
 
                     </Modal.Body>
 
