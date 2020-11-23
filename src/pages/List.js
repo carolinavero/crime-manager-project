@@ -25,8 +25,6 @@ export default function List(){
 
     const [newFromDate, setNewFromDate] = useState(null);
     const [newToDate, setNewToDate] = useState(null);
-
-    const [selectedDates, setSelectedDates] = useState();
     const [selectedType, setSelectedType] = useState();
 
     const [searchResults, setSearchResults]  = useState();
