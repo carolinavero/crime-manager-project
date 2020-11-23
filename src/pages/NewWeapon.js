@@ -70,7 +70,7 @@ export default function NewWeapon() {
                                 <Form.Label> Weapon</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    
+                                    value={weapon}
                                     placeholder="Type the name of the weapon..."
                                     onChange={e => setWeapon(e.target.value)}
                                 />
