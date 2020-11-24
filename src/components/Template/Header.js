@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import logo from '../../assets/images/logo.png';
+import logo2x from '../../assets/images/logo@2x.png';
 
 export default function Header({ back, close, title }) {
 
@@ -60,7 +61,7 @@ export default function Header({ back, close, title }) {
 
                     :      
 
-                    <img src={logo} alt="Crime Manager"/>   
+                    <img src={logo} srcset={logo2x} alt="Crime Manager"/>   
 
                     }
                    
