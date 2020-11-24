@@ -50,8 +50,6 @@ export default function Create() {
             "crime_date": moment(date).format('YYYY/MM/DD - HH:mm:ss')
         };
 
-        console.log(newCrime);
-
         await api.post(`/crime`, newCrime);
         
     }
@@ -146,7 +144,7 @@ export default function Create() {
                         <Form>
 
                             <Row>
-                                <Col sm={6}>
+                                <Col xs={12} sm={12} md={12} lg={6}>
                                     <Form.Group controlId="formTypeOfCrimes">
                                         <Form.Label>Type of crime</Form.Label>
                                         <Form.Control as="select" 
@@ -173,7 +171,7 @@ export default function Create() {
                             </Row>
 
                             <Row>
-                                <Col sm={3}>
+                                <Col xs={12} sm={12} md={6} lg={3}>
                                     <Form.Group controlId="formDate" className="mb-3 input-date">
                                         <Form.Label> Date</Form.Label>
                                         <div className="d-flex align-items-center justify-content-between">
@@ -192,7 +190,7 @@ export default function Create() {
 
                                 </Col>
                           
-                                <Col sm={3}>
+                                <Col xs={12} sm={12} md={6} lg={3}>
                                     <Form.Group controlId="formCountry" className="mb-3">
                                         <Form.Label> Country</Form.Label>
                                         <Form.Control 
@@ -213,7 +211,7 @@ export default function Create() {
                             {   criminals &&
                                 criminals.map((item, index) => (
 
-                                <Col xs={12} sm={6} key={index}>
+                                <Col xs={12} sm={12} md={8} lg={6} key={index}>
 
                                     <Form.Group className="w-100" controlId="formCriminal">
                                         <Form.Label> Criminal</Form.Label>
@@ -271,7 +269,7 @@ export default function Create() {
                             </Row>
                                                         
                             <Row className="mb-5">
-                                <Col sm={3}>
+                                <Col sm={4} md={3} lg={3}>
                                     <Button
                                         variant="link"
                                         className="btn btn-light"
@@ -280,7 +278,7 @@ export default function Create() {
                                     </Button>
                                 
                                 </Col>
-                                <Col className="d-none d-sm-block" sm={3}>
+                                <Col className="d-none d-sm-block" sm={4} md={3} lg={3}>
                                     <Link to="/weapon"
                                         variant="link"
                                         className="btn btn-light"
@@ -294,7 +292,7 @@ export default function Create() {
                             <Row className="d-flex flex-direction-row many-items">
                                 {
                                     victims.map((victim, index) => (
-                                        <Col xs={12} sm={6} key={index}>
+                                        <Col xs={12} sm={12} md={8} lg={6} key={index}>
 
                                             <Form.Group className="w-100" controlId="formVictim">
                                                 <Form.Label> Victim (optional) </Form.Label>
@@ -330,7 +328,7 @@ export default function Create() {
                             </Row>
 
                             <Row>
-                                <Col sm={3}>
+                                <Col sm={4} md={3} lg={3}>
                                 
                                     <Button
                                         variant="link"

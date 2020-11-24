@@ -100,11 +100,11 @@ export default function List(){
             <Container className="main-container">
 
                 <Row className="d-flex justify-content-between">
-                    <Col xs={12} sm={8}>
+                    <Col xs={12} sm={12} md={7} lg={8}>
                         <h1>Crime <span className="letter">L</span>ist</h1>
                     </Col>
 
-                    <Col sm={3} className="d-flex">
+                    <Col xs={12} sm={12} md={5} lg={3} className="d-flex">
                         <Link to="/add" 
                             className="btn btn-primary d-none d-sm-inline-block"
                         >
@@ -130,7 +130,7 @@ export default function List(){
 
                             <Form.Row>
 
-                                <Form.Group as={Col} xs={6} sm={6} controlId="formTypeOfCrimes">
+                                <Form.Group as={Col} xs={6} md={3} lg={6} controlId="formTypeOfCrimes">
                                     <Form.Label><i className="fa fa-folder-open"></i> Type of crime</Form.Label>
                                     <Form.Control 
                                         as="select" 
@@ -190,7 +190,7 @@ export default function List(){
 
                                 {/* === Mobile === */}
                                 
-                                <Form.Group as={Col} xs={6} controlId="formDateFrom" className="d-lg-none">
+                                <Form.Group as={Col} xs={6} md={3} lg={6} controlId="formDateFrom" className="d-lg-none">
                                     <Form.Label><i className="fa fa-calendar"></i> Date</Form.Label>
                                     <Form.Control
                                         as="select"
@@ -203,10 +203,9 @@ export default function List(){
                                     </Form.Control>
                                 </Form.Group>
 
-                            </Form.Row>
-
-                            <Form.Row>
-                                <Form.Group as={Col} sm={6} controlId="formTextFilter">
+                                <Form.Group 
+                                    as={Col} xs={6} sm={6} md={{ span: 3, offset: 3 }} lg={{ span: 6, offset: 0 }} 
+                                    controlId="formOrderBy">
                                     <Form.Label>
                                         <i className="fa fa-sort-amount-asc"></i> Order by
                                     </Form.Label>
@@ -225,12 +224,12 @@ export default function List(){
                             </Form.Row>
 
                             <Row>
-                                <Col sm={3}>
+                                <Col xs={12} sm={12} md={12} lg={3}>
                                     <Button 
                                         variant="secondary"
                                         onClick={handleSearch} >
                                         <i className="fa fa-search"></i> 
-                                        <span className="d-none d-sm-inline">Search</span>
+                                        <span className="d-none d-sm-inline">Buscar</span>
                                     </Button>
                                 </Col>
                             </Row>
@@ -247,7 +246,7 @@ export default function List(){
 
                     searchResults.map((crime) =>
                         
-                        <Col className="d-flex mb-3" sm={3} key={crime.id_crime} >
+                    <Col className="d-flex mb-3" xs={12} sm={6} md={6} lg={3} key={crime.id_crime} >
                         <div className="card crime" >
                             <div className="crime__title">
                                 {crime.criminal_crime_types.map((types) => types.crime_type)}
@@ -282,6 +281,9 @@ export default function List(){
                     show={show}
                     className="crime__modal"
                     onHide={handleClose}
+                    size="lg"
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
                 >
                     
                     <Header  title="Crime details" close={handleClose} />
@@ -296,6 +298,7 @@ export default function List(){
 
                             <div className="justify-content-between d-none d-sm-flex">
                                 <h4>Crime</h4> 
+                                    
                                 <a href="/"
                                     onClick={(e) => handleDelete(e, modalCrime.id_crime)}>
                                     <i className="fa fa-trash"></i>
@@ -326,13 +329,16 @@ export default function List(){
                             <div className="crime__date"> {moment(modalCrime.crime_date).format('YYYY/MM/DD - HH:mm:ss')}</div>
                             <div className="crime__small mb-4">{modalCrime.country}</div>
 
+                            <h4>Criminal</h4>
+
+                            <div className="criminals">
+                                
                             { modalCrime.criminal_crime_types &&
                             
                                 modalCrime.criminal_crime_types.map((types) => (
                                     
-                                    <div key={types.id_crime}>
+                                    <div key={types.id_crime} >
 
-                                        <h4>Criminal</h4>
                                         <div className="d-flex criminal-block">
                                             <div className="img-rounded img-avatar">
                                                 <Image alt={types.criminal} width={100} height={100} />
@@ -357,12 +363,14 @@ export default function List(){
                                     </div>                           
                                 ))
                             } 
+                            </div>
+
 
                         </div>
 
-                        <div>
-                            
-                            <h4>Victim</h4>
+                        <h4>Victim</h4>
+                        
+                        <div className="victims">
 
                                { 
 
@@ -387,9 +395,9 @@ export default function List(){
 
                                     :  
 
-                                    <div className="d-flex mb-4 align-items-center">
+                                    <div className="d-flex mb-4 align-items-center victim-block">
                                         <div className="crime__title">
-                                            <div className="img-rounded">
+                                            <div className="img-rounded img-avatar">
                                                 <div className="img-no-victim">No Victim</div>
                                             </div>
                                         </div>
