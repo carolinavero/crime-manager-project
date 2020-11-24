@@ -62,7 +62,6 @@ export default function List(){
         });
 
         setSearchResults(results.data.data.crimes);
-
     }
 
     // Delete Crime
@@ -72,11 +71,11 @@ export default function List(){
         await api.delete('/crime', {
             params: {
                 crime_id: id_crime,
-                
             } 
         });
         setShow(false);
 
+        // Reload crimes
         const notDeleted = searchResults.filter(crime => crime.id_crime !== id_crime);
         setSearchResults(notDeleted);
 

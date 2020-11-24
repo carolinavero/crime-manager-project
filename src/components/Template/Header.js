@@ -13,57 +13,52 @@ export default function Header({ back, close, title }) {
                 
                 <Container fluid>
                     <Row >
+                        <Col>
 
-                    {   
-                    
-                    back ?
+                            {
 
-                    <div className="d-flex align-items-center justify-content-center">
+                                back ?
 
-                        <Col xs={3}>
+                                    <div className="header__back">
 
-                            <Link to="/" 
-                                className="btn btn-primary btn-back d-flex justify-content-center align-items-center">
-                                <i className="fa fa-arrow-left"></i>
-                            </Link>
+                                        <Link to="/"
+                                            className="btn btn-primary btn-back ">
+                                            <i className="fa fa-arrow-left"></i>
+                                        </Link>
 
+                                        <div className="d-md-none">
+                                            <h3>{title}</h3>
+                                        </div>
+                                       
+                                    </div>
+
+                                    : close ?
+
+                                        <div className="header__close">
+
+                                            <Link to="/"
+                                                className="btn btn-primary btn-back "
+                                                onClick={close}>
+                                                <i className="fa fa-arrow-left"></i>
+                                            </Link>
+
+                                            <div className="d-md-none">
+                                                <h3>{title}</h3>
+                                            </div>
+                                          
+
+                                        </div>
+
+                                        :
+
+                                        <img src={logo} srcSet={logo2x} alt="Crime Manager" />
+
+                            }
+                        
+                        
                         </Col>
-                        <Col xs={9}>
 
-                            <div className="d-md-none">
-                                <h3>{title}</h3>
-                            </div>
-                        </Col>
-
-                    </div>
-
-                    : close ? 
                     
-                        <div className="d-flex align-items-center justify-content-center">
-
-                            <Col xs={3}>
-
-                                <Link to="/"
-                                    className="btn btn-primary btn-back d-flex justify-content-center align-items-center"
-                                    onClick={close}>
-                                    <i className="fa fa-arrow-left"></i>
-                                </Link>
-
-                            </Col>
-                            <Col xs={9}>
-
-                                <div className="d-md-none">
-                                    <h3>{title}</h3>
-                                </div>
-                            </Col>
-
-                        </div>
-
-                    :      
-
-                    <img src={logo} srcset={logo2x} alt="Crime Manager"/>   
-
-                    }
                    
                     </Row>
                 </Container>

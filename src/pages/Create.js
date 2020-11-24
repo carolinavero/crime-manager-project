@@ -19,6 +19,7 @@ export default function Create() {
     const [listOfVictims, setListOfVictims] = useState();
 
     const [date, setDate] = useState();
+    const [country, setCountry] = useState();
     const [victims, setVictims] = useState(['']); 
     const [criminals, setCriminals] = useState([{
         criminal: '',
@@ -45,7 +46,7 @@ export default function Create() {
             "victim_list": victimList,
             "weapon_list": weaponList,
             "criminal_list": criminalList,
-            "country": "Brasil",
+            "country": country,
             "crime_date": moment(date).format('YYYY/MM/DD - HH:mm:ss')
         };
 
@@ -173,7 +174,7 @@ export default function Create() {
 
                             <Row>
                                 <Col sm={3}>
-                                    <Form.Group controlId="formDate" className="mb-5 input-date">
+                                    <Form.Group controlId="formDate" className="mb-3 input-date">
                                         <Form.Label> Date</Form.Label>
                                         <div className="d-flex align-items-center justify-content-between">
 
@@ -187,6 +188,20 @@ export default function Create() {
                                             />
                                             <i className="fa fa-calendar"></i>
                                         </div>
+                                    </Form.Group>
+
+                                </Col>
+                          
+                                <Col sm={3}>
+                                    <Form.Group controlId="formCountry" className="mb-3">
+                                        <Form.Label> Country</Form.Label>
+                                        <Form.Control 
+                                        type="text" 
+                                        placeholder="Type the name of the country..." 
+                                        value={country}
+                                        onChange={(e) => setCountry(e.target.value)}
+                                    />
+
                                     </Form.Group>
 
                                 </Col>

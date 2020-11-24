@@ -7,6 +7,8 @@
     --white-color: #FFFFFF;
     --input-border-color: #BCE0FD;
     --arrow-color: #2699FB;
+
+    --notify-color: #0099CC;
     --placeholder-color: #95A0A6;
     
     --box-shadow-color: #00000029;
@@ -76,6 +78,14 @@ header {
 
 header img {
     max-width: 100px;
+}
+
+.header__back, 
+.header__close {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    text-align: left;
 }
 
 footer {
@@ -191,6 +201,7 @@ i {
 .btn-back {
     width: 40px;
     height: 40px;
+    line-height: 30px;
 }
 
 .btn-back i {
@@ -270,14 +281,10 @@ i {
         margin-top: 6rem;
     }
 
-    .btn{
+    .btn {
         height: 30px;
         line-height: 18px;
     }
-    
- /*    .btn {
-        box-shadow: 3px 3px 3px grey, 0 3px 10px 3px white;
-    } */
     
     .btn-primary {
         height: 30px;
@@ -288,19 +295,27 @@ i {
         display: flex;
         align-items: center;
         justify-content: center;
-
-        text-align: center;
+        padding: 0;
     }
+     
     header .btn-primary {
         height: 30px;
-
-        
     }
+
+
+    .header__back, 
+    .header__close {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        text-align: center;
+    }
+
 
     .many-items {
         display: flex;
         flex-direction: row;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
     }
 
     .crime__modal {
