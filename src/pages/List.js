@@ -4,6 +4,7 @@ import { Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
 
 import Image from 'react-random-image';
 import moment from 'moment';
+
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -252,8 +253,9 @@ export default function List(){
                                 {crime.criminal_crime_types.map((types) => types.crime_type)}
                             </div>
                             <div className="crime__small mb-3">Crime type</div>
-                                
-                                <div className="crime__date"> {moment(crime.crime_date).format('YYYY/MM/DD - HH:mm:ss')}</div>
+                                <div className="crime__date"> 
+                                    {moment(crime.crime_date).format('YYYY/MM/DD - HH:mm:ss')}
+                                </div>
                             <div className="crime__small">{crime.country}</div>
 
                             <div className="crime__zoom-button">

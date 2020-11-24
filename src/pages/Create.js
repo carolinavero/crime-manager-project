@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Col, Row, Container, Form, Button } from 'react-bootstrap';
 
 import DatePicker from 'react-datepicker';
@@ -27,9 +27,12 @@ export default function Create() {
     }]);
     const [types, setTypes] = useState(['']);
 
+    let history = useHistory();
+
+    
     async function handleCreate(e) {
         e.preventDefault();
-
+        
         const victimList = [];
         victims.forEach(item => {
             victimList.push({ "victim_id": item} )
@@ -41,6 +44,9 @@ export default function Create() {
             weaponList.push({ "weapon_id": item.weapon});
             criminalList.push({ "criminal_id": item.criminal, "id_crime_type": 1});
         })
+        
+        console.log("data digitada", date);
+
 
         const newCrime = {
             "victim_list": victimList,
@@ -51,6 +57,8 @@ export default function Create() {
         };
 
         await api.post(`/crime`, newCrime);
+
+        history.push("/");
         
     }
 
@@ -179,7 +187,8 @@ export default function Create() {
                                             <DatePicker
                                                 placeholderText="YYYY/MM/DD - HH:MM:SS"
                                                 className="form-control"
-                                                dateFormat="yyyy/MM/dd H:mm:ss"
+                                                dateFormat="yyyy/MM/dd HH:mm:ss"
+                                                showTimeSelect
                                                 selected={date}
                                                 onChange={date => setDate(date)}
 
@@ -196,7 +205,7 @@ export default function Create() {
                                         <Form.Control 
                                         type="text" 
                                         placeholder="Type the name of the country..." 
-                                        value={country}
+                                        
                                         onChange={(e) => setCountry(e.target.value)}
                                     />
 
