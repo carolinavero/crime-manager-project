@@ -247,10 +247,13 @@ export default function List(){
 
                     searchResults.map((crime) =>
                         
-                    <Col className="d-flex mb-3" xs={12} sm={6} md={6} lg={3} key={crime.id_crime} >
+                    <Col className="d-flex mb-3 fade-in" xs={12} sm={6} md={6} lg={3} key={crime.id_crime}  >
                         <div className="card crime" >
                             <div className="crime__title">
-                                {crime.criminal_crime_types.map((types) => types.crime_type)}
+                                {crime.criminal_crime_types.map((types, i) => 
+                                    <div key={i}>{types.crime_type}</div>
+                                    )
+                                }
                             </div>
                             <div className="crime__small mb-3">Crime type</div>
                                 <div className="crime__date"> 
@@ -310,9 +313,10 @@ export default function List(){
 
                             {modalCrime.criminal_crime_types &&
 
-                                modalCrime.criminal_crime_types.map((types) => (
+                                modalCrime.criminal_crime_types.map((types, i) => (
 
-                                    <div key={types.id_crime} className="d-flex justify-content-between align-items-flex-start">
+                                    <div key={i} 
+                                        className="d-flex justify-content-between align-items-flex-start">
 
                                         <div className="crime__title">
                                             {types.crime_type}
@@ -337,9 +341,9 @@ export default function List(){
                                 
                             { modalCrime.criminal_crime_types &&
                             
-                                modalCrime.criminal_crime_types.map((types) => (
+                                modalCrime.criminal_crime_types.map((types, k) => (
                                     
-                                    <div key={types.id_crime} >
+                                    <div key={k} >
 
                                         <div className="d-flex criminal-block">
                                             <div className="img-rounded img-avatar">
@@ -350,8 +354,8 @@ export default function List(){
                                                 <p className="crime__small">Criminal</p>
                           
                                                 {       
-                                                    modalCrime.weapons_crime.map((weapon) => (
-                                                        <div key={weapon.id_crime}>
+                                                    modalCrime.weapons_crime.map((weapon, j) => (
+                                                        <div key={j}>
                                                             {weapon.weapon}
                                                             <p className="crime__small">{weapon.weapon_type}</p>
                                                         </div>
@@ -379,9 +383,9 @@ export default function List(){
                                     modalCrime.victims_crime &&
                                     modalCrime.victims_crime.length > 0 ?
                                     
-                                    modalCrime.victims_crime.map((victim) => (
+                                    modalCrime.victims_crime.map((victim, h) => (
 
-                                        <div key={victim.id_crime} className="victim-block d-flex mb-4 align-items-center">
+                                        <div key={h} className="victim-block d-flex mb-4 align-items-center">
                                             <div className="crime__title">
                                                 <div className="img-rounded img-avatar">
                                                     <Image  alt={victim.victim} height={100} width={100}  />
